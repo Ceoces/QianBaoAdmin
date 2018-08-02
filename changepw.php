@@ -17,7 +17,7 @@
         {
           $data = array('password' => sha1($_POST['newpw1']));
           $sql="id='".$_SESSION['id']."'";
-          $db->update("teacher",$data,$sql);
+          $db->update("t_teacher",$data,$sql);
         }
       }
     else

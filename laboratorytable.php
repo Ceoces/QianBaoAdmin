@@ -1,20 +1,9 @@
 <?php 
   require_once('logincheck.php'); 
-  
   header("Content-Type: text/html; charset=utf-8");
-  
   include_once('mysql.class.php');
   $db=new Mysql();
-  $sql="select * from v_project ";
-  if($db->connect($dbhost,$dbuser,$dbpassword,$dbname))
-  {
-    echo "数据库连接错误";
-    die;
-  }
-  $row=$db->findAll($sql);
 ?>
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -58,41 +47,45 @@
     </div><!-- headerbar -->
         
     <div class="pageheader">
-      <h2><i class="fa fa-home"></i> 查看项目信息 </h2>
+      <h2><i class="fa fa-home"></i> 查看实验室 </h2>
       <div class="breadcrumb-wrapper">
         <span class="label">位置：</span>
         <ol class="breadcrumb">
           <li><a href="index.html">主页</a></li>
-          <li>项目管理</li>
-          <li class="active">查看项目信息</li>
+          <li>实验室管理</li>
+          <li class="active">查看实验室</li>
         </ol>
       </div>
     </div>
+
+    <div class="contentpanel">
       <div class="panel panel-default">
         <div class="panel-heading">
             <div class="panel-btns">
-              <a href="addpro.php"><button class="btn btn-primary" style="float: right;">添加项目信息</button></a>
+              <a href="addlaboratory.php"><button class="btn btn-primary" style="float: right;">添加实验室</button></a>
             </div>
-            <h4 class="panel-title">查看项目信息</h4>
+            <h4 class="panel-title">查看实验室</h4>
         </div><!-- panel-heading -->
         <div class="panel-body">
           <div class="table-responsive">
           <table class="table" id="table2">
               <thead>
                  <tr>
-                    <th>项目名称</th>
-                    <th>指导教师</th>
-                    <th>地点</th>
-                    <th>开始时间</th>
-                    <th>结束时间</th>
+                  <th>实验室</th>
+                    <th>教师</th>
+                    <th>创建时间</th>
+                    <th>人数</th>
+                    <th>人数上限</th>
                     <th></th>
                  </tr>
               </thead>
               <tbody>
                  <?php  
-                  $sql="select * from v_project ";
-                  if(is_root==0){
-                    $sql="select * from v_project where teacherid='".$_SESSION['id']."'";
+                 $db=new Mysql();
+                  $sql="select * from v_laboratory";
+                  if(is_root==0)
+                  {
+                    $sql="select * from v_laboratory where teachername='".$_SESSION['id']."'";
                   }
                   if($db->connect($dbhost,$dbuser,$dbpassword,$dbname))
                   {
@@ -103,12 +96,12 @@
                       for ($i=0; $i < count($row); $i++) 
                       { 
                         echo "<tr class='odd gradeX'>";
-                        echo "<td><a href='proinfo.php?id=" .$row[$i]['id']."'>".$row[$i]['proname']."</a></td>";
+                        echo "<td><a href='laboratoryinfo.php?id=".$row[$i]['id']."'>".$row[$i]['laboratoryname']."</a></td>";
                         echo "<td>".$row[$i]['teachername']."</td>";
-                        echo "<td><a href='laboratoryinfo.php?id=".$row[$i]['laboratoryid']."'>".$row[$i]['laboratoryname']."</a></td>";
-                        echo "<td>".$row[$i]['startTime']."</td>";
-                        echo "<td>".$row[$i]['endTime']."</td>";
-                        echo "<td><button class='btn btn-warning btn-sm'>修改</button>&nbsp;&nbsp;&nbsp;&nbsp;<a href='delete.php?obj=project&id=".$row[$i]['id']."'><button class='btn btn-danger btn-sm' data-toggle='modal' data-target='#myModal'>删除</button></a></td>";
+                        echo "<td>".$row[$i]['newtime']."</td>";
+                        echo "<td>".$row[$i]['stunum']."</td>";
+                        echo "<td>".$row[$i]['maxnum']."</td>";
+                        echo "<td><button class='btn btn-warning btn-sm'>修改</button>&nbsp;&nbsp;&nbsp;&nbsp;<a href='delete.php?obj=laboratory&id=".$row[$i]['id']."'><button class='btn btn-danger btn-sm'>删除</button></a></td>";
                         echo "</tr>";
                       }
                  ?>
@@ -131,13 +124,14 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
       </div>
       <div class="modal-body">
-        确定删除这条记录么？
+        Content goes here...
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-        <a><button type="button" class="btn btn-primary">删除</button></a>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
       </div>
     </div><!-- modal-content -->
   </div><!-- modal-dialog -->

@@ -3,13 +3,7 @@
   header("Content-Type: text/html; charset=utf-8");
   include_once('mysql.class.php');
   $db=new Mysql();
-  $sql="select * from view_stu";
-  if($db->connect($dbhost,$dbuser,$dbpassword,$dbname))
-  {
-    echo "数据库连接错误";
-    die;
-  }
-  $row=$db->findAll($sql);
+  
 ?>
 
 
@@ -84,7 +78,7 @@
                     <th>姓名</th>
                     <th>班级</th>
                     <th>教师</th>
-                    <th>项目</th>
+                    <th>实验室</th>
                     <th>加入时间</th>
                     <th>离开时间</th>
                     <th></th>
@@ -92,14 +86,25 @@
               </thead>
               <tbody>
                  <?php  
+                 $sql="select * from v_student";
+                 if(is_root==0)
+                   {
+                    $sql="select * from v_student where teacherid='".$_SESSION['id']."'";
+                  }
+                  if($db->connect($dbhost,$dbuser,$dbpassword,$dbname))
+                 {
+                   echo "数据库连接错误";
+                   die;
+                 }
+                 $row=$db->findAll($sql);
                       for ($i=0; $i < count($row); $i++) 
                       { 
                         echo "<tr class='odd gradeX'>";
                         echo "<td>".$row[$i]['id']."</td>";
-                        echo "<td><a href='stuinfo.php?id=" .$row[$i]['id']."'>".$row[$i]['name']."</a></td>";
+                        echo "<td><a href='stuinfo.php?id=" .$row[$i]['id']."'>".$row[$i]['stuname']."</a></td>";
                         echo "<td>".$row[$i]['class']."</td>";
                         echo "<td>".$row[$i]['teachername']."</td>";
-                        echo "<td>".$row[$i]['projectname']."</td>";
+                        echo "<td><a href='laboratoryinfo.php?id=".$row[$i]['id']."'>".$row[$i]['laboratoryname']."</a></td>";
                         echo "<td>".$row[$i]['addtime']."</td>";
                         echo "<td>".$row[$i]['leavetime']."</td>";
                         echo "<td><button class='btn btn-warning btn-sm'>修改</button>&nbsp;&nbsp;&nbsp;&nbsp;<a href='delete.php?obj=student&id=".$row[$i]['id']."'><button class='btn btn-danger btn-sm'>删除</button></a></td>";

@@ -7,7 +7,7 @@
                 <?php
                   include_once('mysql.class.php');
                   $db=new Mysql();
-                  $sql="select name from teacher where id='".$_SESSION['id']."'";
+                  $sql="select name from t_teacher where id='".$_SESSION['id']."'";
                   if($db->connect($dbhost,$dbuser,$dbpassword,$dbname))
                   {
                     echo "数据库连接错误";
@@ -20,7 +20,7 @@
               </button>
               <ul class="dropdown-menu dropdown-menu-usermenu pull-right">
                 <li><a href="changepw.php"><i class="glyphicon glyphicon-cog"></i> 修改密码</a></li>
-                <li><a href="logout.php"><i class="glyphicon glyphicon-log-out"></i> 退出登录</a></li>
+                <li><a href="login.php"><i class="glyphicon glyphicon-log-out"></i> 退出登录</a></li>
               </ul> 
             </div>
           </li>

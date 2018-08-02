@@ -1,27 +1,32 @@
 <?php
   require_once('logincheck.php');
+  require_once('rootcheck.php');
   include_once('mysql.class.php');
   $db=new Mysql();
-  $sql1="select * from teacher";
-  $sql2="select * from project";
   if($db->connect($dbhost,$dbuser,$dbpassword,$dbname))
   {
     echo "数据库连接错误";
     die;
   }
-  $row1=$db->findAll($sql1);
-  $row2=$db->findAll($sql2);
-  //添加学生
+  //添加教师
     if(isset($_POST['name'])&&isset($_POST['id']))
       {
         $data=array(
           "name"=>$_POST['name'],
           "id"=>$_POST['id'],
           "password"=>sha1($_POST['id']),
+          "phone"=>$_POST['phone'],
+          "email"=>$_POST['email'],
+          "info"=>$_POST['info']
         );
-        if($db->save("teacher",$data))
+        if (isset($_POST['root'])&&$_POST['root']=='1') {
+          $data['root']=1;
+        }else{
+          $data['root']=0;
+        }
+        if($db->save("t_teacher",$data))
         {
-          echo "插入数据失败";
+          header("location:teachertable.php");
         }
       }
 ?>
@@ -113,6 +118,34 @@
                 <input type="text" placeholder="教工号" class="form-control" name="id" />
               </div>
             </div>
+
+            <div class="form-group">
+              <label class="col-sm-3 control-label">手机</label>
+              <div class="col-sm-6">
+                <input type="text" placeholder="手机号" class="form-control" name="phone" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-sm-3 control-label">邮箱</label>
+              <div class="col-sm-6">
+                <input type="text" placeholder="邮箱" class="form-control" name="email" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-sm-3 control-label">介绍</label>
+              <div class="col-sm-6">
+                <textarea class="form-control" rows="5" name="info"></textarea>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="col-sm-6 col-sm-offset-4">
+               <div class="checkbox block"><label><input type="checkbox" name="root" value="1"> &nbsp;超级管理员权限</label></div>
+               </div>
+            </div>
+  
             <div class="form-group">
             <div class="row">
               <div class="col-sm-6 col-sm-offset-4">

@@ -1,17 +1,15 @@
 <?php
 	session_start();
+	 require_once('mysql.class.php');
+	 $db=new Mysql();
+	if($db->connect($dbhost,$dbuser,$dbpassword,$dbname))
+	{
+	   echo "数据库连接错误";
+	   die;
+	}
 	if(isset($_SESSION['id'])&&isset($_SESSION['pwd']))
 	  {
-	    require_once('mysql.class.php');
-	    $db=new Mysql();
-	    
-	    $sql="select password from teacher where id='".$_SESSION['id']."'";
-
-	    if($db->connect($dbhost,$dbuser,$dbpassword,$dbname))
-	    {
-	      echo "数据库连接错误";
-	      die;
-	    }
+	  	$sql="select password from t_teacher where id='".$_SESSION['id']."'";
 	    $row=$db->findAll($sql);
 
 	    if($row[0]['password']!=$_SESSION['pwd'])

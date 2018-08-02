@@ -7,12 +7,8 @@
     echo "数据库连接错误";
     die;
   }
-  $sql1="select * from teacher";
-  $sql2="select * from project";
-  $row1=$db->findAll($sql1);
-  $row2=$db->findAll($sql2);
   //添加学生
-    if(isset($_POST['name'])&&isset($_POST['class'])&&isset($_POST['teacher'])&&isset($_POST['project'])&&isset($_POST['id'])&&isset($_POST['addtime'])&&isset($_POST['leavetime']))
+    if(isset($_POST['name'])&&isset($_POST['class'])&&isset($_POST['teacher'])&&isset($_POST['id'])&&isset($_POST['addtime'])&&isset($_POST['leavetime'])&&isset($_POST['phone']))
       {
         $data=array(
           "name"=>$_POST['name'],
@@ -22,12 +18,37 @@
           "id"=>$_POST['id'],
           "password"=>sha1($_POST['id']),
           "addtime"=>$_POST['addtime'],
-          "leavetime"=>$_POST['leavetime']
+          "leavetime"=>$_POST['leavetime'],
+          "laboratoryid"=>$_POST['laboratory']
         );
-        if($db->save("student",$data))
+
+        if(!$db->save("t_student",$data))
         {
           echo "插入数据失败";
         }
+
+        if (isset($_POST['project'])) {
+          $data=$arrayName = array(
+            'studentid' => $_POST['id'],
+            'proid' => $_POST['project']
+          );
+          if(!$db->save("t_stu_pro",$data))
+          {
+            echo "插入数据失败";
+          }
+        }
+
+        if (!isset($_POST['laboratory'])) {
+          $data=$arrayName = array(
+            'studentid' => $_POST['id'],
+            'laboratoryid' => $_POST['laboratory']
+          );
+          if($db->save("t_stu_laboratory",$data))
+          {
+            echo "插入数据失败";
+          }
+        }
+        header("location:stutable.php");
       }
 ?>
 
@@ -127,13 +148,50 @@
             </div>
 
             <div class="form-group">
+              <label class="col-sm-3 control-label">手机</label>
+              <div class="col-sm-6">
+                <input type="text" placeholder="手机号" class="form-control" name="phone" />
+              </div>
+            </div>
+
+            <div class="form-group">
               <label class="col-sm-3 control-label">教师</label>
               <div class="col-sm-6">
                 <input list="bj1" placeholder="教师" class="form-control" name="teacher" />
                 <datalist id="bj1">
                     <?php 
-                      for($i=0;$i<count($row1);$i++)
-                        echo "<option value='".$row1[$i]['id']."'>".$row1[$i]['name']."</option>";
+                      if (is_root) {
+                        $sql="select * from t_teacher";
+                      }
+                      else{
+                        $sql="select * from t_teacher where id='".$_SESSION['id']."'";
+                      }
+                      $row=$db->findAll($sql);
+                      for($i=0;$i<count($row);$i++){
+                        echo "<option value='".$row[$i]['id']."'>".$row[$i]['name']."</option>";
+                      }
+                     ?>
+                </datalist> 
+                
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-sm-3 control-label">实验室</label>
+              <div class="col-sm-6">
+                <input list="bj2" placeholder="实验室" class="form-control" name="laboratory" />
+                <datalist id="bj2">
+                    <?php 
+                      if (is_root) {
+                        $sql="select * from t_laboratory";
+                      }
+                      else{
+                        $sql="select * from t_laboratory where teacherid='".$_SESSION['id']."'";
+                      }
+                      $row=$db->findAll($sql);
+                      for($i=0;$i<count($row);$i++){
+                        echo "<option value='".$row[$i]['id']."'>".$row[$i]['name']."</option>";
+                      }
                      ?>
                 </datalist> 
                 
@@ -143,11 +201,19 @@
             <div class="form-group">
               <label class="col-sm-3 control-label">项目</label>
               <div class="col-sm-6">
-                <input list="bj2" class="form-control" placeholder="项目" name="project" />
-                <datalist id="bj2">
+                <input list="bj3" class="form-control" placeholder="项目" name="project" />
+                <datalist id="bj3">
                     <?php 
-                      for($i=0;$i<count($row2);$i++)
-                        echo "<option value='".$row2[$i]['id']."'>".$row2[$i]['name']."</option>";
+                      if (is_root) {
+                        $sql="select * from t_project";
+                      }
+                      else{
+                        $sql="select * from t_project where teacherid='".$_SESSION['id']."'";
+                      }
+                      $row=$db->findAll($sql);
+                      for($i=0;$i<count($row);$i++){
+                        echo "<option value='".$row[$i]['id']."'>".$row[$i]['name']."</option>";
+                      }
                      ?>
                 </datalist> 
               </div>
@@ -181,10 +247,6 @@
 
 
 <script type="text/javascript">
-  function btn_submit()
-  {
-      document.getElementById('form').submit();
-  }
   function btn_reset()
   {
     document.getElementById('form').reset();

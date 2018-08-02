@@ -7,23 +7,21 @@
     echo "数据库连接错误";
     die;
   }
-
-  //添加项目
-    if(isset($_POST['name'])&&isset($_POST['teacher'])&&isset($_POST['addtime'])&&isset($_POST['leavetime'])&&isset($_POST['laboratory'])&&isset($_POST['maxnum']))
+  //添加学生
+    if(isset($_POST['name'])&&$_POST['name']!=""&&isset($_POST['teacher'])&&$_POST['teacher']!=""&&isset($_POST['maxnum'])&&$_POST['maxnum']!="")
       {
         $data=array(
           "name"=>$_POST['name'],
           "teacherid"=>$_POST['teacher'],
-          "startTime"=>$_POST['addtime'],
-          "endTime"=>$_POST['leavetime'],
-          "laboratoryid"=>$_POST['laboratory'],
-          "maxStunum"=>$_POST['maxnum']
+          "maxnum"=>$_POST['maxnum'],
         );
-        if($db->save("t_project",$data))
+        if($db->save("t_laboratory",$data))
         {
-          header('location:protable.php');
+          header('location:laboratorytable.php');
         }
       }
+  $sql1="select * from t_teacher";
+  $row1=$db->findAll($sql1);
 ?>
 
 <!DOCTYPE html>
@@ -76,13 +74,13 @@
     </div><!-- headerbar -->
       
     <div class="pageheader">
-      <h2><i class="fa fa-home"></i> 添加项目信息 </h2>
+      <h2><i class="fa fa-home"></i> 添加实验室 </h2>
       <div class="breadcrumb-wrapper">
         <span class="label">位置：</span>
         <ol class="breadcrumb">
-          <li><a href="index.html">主页</a></li>
-          <li><a href="general-forms.html">项目信息管理</a></li>
-          <li class="active">添加项目信息</li>
+          <li><a href="index.php">主页</a></li>
+          <li>实验室管理</li>
+          <li class="active">添加实验室</li>
         </ol>
       </div>
     </div>
@@ -92,80 +90,44 @@
         <div class="panel-heading">
 
           <div class="panel-btns">
-            <a href="protable.php"><button class="btn btn-primary" style="float: right;">查看项目信息</button></a>
+            <a href="laboratorytable.php"><button class="btn btn-primary" style="float: right;">查看实验室</button></a>
           </div>
-          <h3 class="panel-title">添加项目信息</h4>
+          <h3 class="panel-title">添加实验室</h4>
         </div>
         <div class="panel-body panel-body-nopadding">
           
-          <form id="form" class="form-horizontal form-bordered" method="post" action="addpro.php">
+          <form id="form" class="form-horizontal form-bordered" method="post" action="addlaboratory.php">
             
             <div class="form-group">
-              <label class="col-sm-3 control-label">项目名称</label>
+              <label class="col-sm-3 control-label">实验室</label>
               <div class="col-sm-6">
-                <input type="text" placeholder="项目名称" class="form-control" name="name" />
+                <input type="text" placeholder="实验室" class="form-control" name="name" />
               </div>
             </div>
 
-
+            <div class="form-group">
+              <label class="col-sm-3 control-label">人数上限</label>
+              <div class="col-sm-6">
+                <input type="text" class="form-control" name="maxnum" />
+              </div>
+            </div>
 
             <div class="form-group">
               <label class="col-sm-3 control-label">教师</label>
               <div class="col-sm-6">
                 <input list="bj1" placeholder="教师" class="form-control" name="teacher" />
                 <datalist id="bj1">
-                    <?php 
-                      if(is_root){
-                        $sql1="select * from t_teacher";
-                      }else{
-                        $sql1="select * from t_teacher where id='".$_SESSION['id']."'";
-                      }
-                      $row1=$db->findAll($sql1);
-                      for($i=0;$i<count($row1);$i++){
-                        echo "<option value='".$row1[$i]['id']."'>".$row1[$i]['name']."</option>";
-                      }
+                      <?php 
+                        if (is_root) {
+                          for($i=0;$i<count($row1);$i++){
+                            echo "<option value='".$row1[$i]['id']."'>".$row1[$i]['name']."</option>";
+                          }
+                        } else{
+                          echo "<option value='".$id."'>".$name."</option>";
+                        }
                      ?>
                 </datalist> 
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label class="col-sm-3 control-label">最大人数</label>
-              <div class="col-sm-6">
-                <input type="text" placeholder="0" class="form-control" name="maxnum" />
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label class="col-sm-3 control-label">地点</label>
-              <div class="col-sm-6">
-                <input list="bj2" placeholder="实验室" class="form-control" name="laboratory" />
-                <datalist id="bj2">
-                    <?php 
-                      if(is_root){
-                        $sql2="select * from t_laboratory";
-                      }else{
-                        $sql2="select * from t_laboratory where teacherid='".$_SESSION['id']."'";
-                      }
-                      $row2=$db->findAll($sql2);
-                      for($i=0;$i<count($row2);$i++){
-                        echo "<option value='".$row2[$i]['id']."'>".$row2[$i]['name']."</option>";
-                      }
-                     ?>
-                </datalist> 
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label class="col-sm-3 control-label">开始时间</label>
-              <div class="col-sm-6">
-                <input type="date" class="form-control" name="addtime" />
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="col-sm-3 control-label">结束时间</label>
-              <div class="col-sm-6">
-                <input type="date" class="form-control" name="leavetime"/>
+                
               </div>
             </div>
             <div class="form-group">

@@ -4,7 +4,7 @@
  * @author 
  * @version 1.0
  */
-	$dbname="data";
+	$dbname="data2";
 	$dbuser="root";
 	$dbpassword="root";
 	$dbhost="localhost";

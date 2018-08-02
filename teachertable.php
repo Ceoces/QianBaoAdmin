@@ -1,15 +1,10 @@
 <?php 
   require_once('logincheck.php'); 
+  require_once('rootcheck.php');
   header("Content-Type: text/html; charset=utf-8");
   include_once('mysql.class.php');
   $db=new Mysql();
-  $sql="select * from teacher";
-  if($db->connect($dbhost,$dbuser,$dbpassword,$dbname))
-  {
-    echo "数据库连接错误";
-    die;
-  }
-  $row=$db->findAll($sql);
+ 
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -78,17 +73,33 @@
                  <tr>
                   <th>教工号</th>
                     <th>姓名</th>
+                    <th>权限</th>
+                    <th>电话</th>
+                    <th>邮箱</th>
                     <th></th>
                  </tr>
               </thead>
               <tbody>
                  <?php  
-                      
+                       $sql="select * from t_teacher";
+                       if($db->connect($dbhost,$dbuser,$dbpassword,$dbname))
+                       {
+                         echo "数据库连接错误";
+                         die;
+                       }
+                       $row=$db->findAll($sql);
                       for ($i=0; $i < count($row); $i++) 
                       { 
                         echo "<tr class='odd gradeX'>";
                         echo "<td>".$row[$i]['id']."</td>";
                         echo "<td><a href='teacherinfo.php?id=" .$row[$i]['id']."'>".$row[$i]['name']."</a></td>";
+                        if ($row[$i]['static']=='1') {
+                          echo "<td><p class='text-danger'>超级管理员</p></td>";
+                        }else{
+                          echo "<td>管理员</td>";
+                        }
+                        echo "<td>".$row[$i]['phone']."</td>";
+                        echo "<td>".$row[$i]['email']."</td>";
                         echo "<td><button class='btn btn-warning btn-sm'>修改</button>&nbsp;&nbsp;&nbsp;&nbsp;<a href='delete.php?obj=teacher&id=".$row[$i]['id']."'><button class='btn btn-danger btn-sm'>删除</button></a></td>";
                         echo "</tr>";
                       }

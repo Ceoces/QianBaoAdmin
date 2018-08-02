@@ -22,11 +22,12 @@
 <body class="signin">
   <?php
   session_start();
+  session_unset();
   if(isset($_POST['id'])&&isset($_POST['pwd']))
   {
     require_once('mysql.class.php');
     $db=new Mysql();
-    $sql="select password from teacher where id='".$_POST['id']."'";
+    $sql="select password from t_teacher where id='".$_POST['id']."'";
 
     if($db->connect($dbhost,$dbuser,$dbpassword,$dbname))
     {
@@ -34,7 +35,6 @@
       die;
     }
     $row=$db->findAll($sql);
-    echo $row[0]['password'];
     if($row[0]['password']==sha1($_POST['pwd']))
     {
       $_SESSION['id']=$_POST['id'];
@@ -47,7 +47,7 @@
       $_SESSION['id']="";
       $_SESSION['pwd']="";
     }
-  }
+  }   
 ?>
 
 <!-- Preloader -->
