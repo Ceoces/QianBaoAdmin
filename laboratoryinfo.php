@@ -110,17 +110,30 @@
         <div class="tab-content">
           <div class="tab-pane active" id="activities">
             <div class="activity-list">
-              
-              <div class="media act-media">
-                <a class="pull-left" href="#">
-                  <img class="media-object act-thumb" src="images/photos/user1.png" alt="" />
-                </a>
-                <div class="media-body act-media-body">
-                  <strong>Ray Sin</strong> is now following to <strong>Chris Anthemum</strong>. <br />
-                  <small class="text-muted">Yesterday at 1:30pm</small>
-                </div>
-              </div><!-- media -->
-              
+              <?php 
+              $sql="select * from v_signtable where laboratoryid=".$_GET['id'];
+              $v_sign_row=$db->findAll($sql);
+              if (count($v_sign_row)==0) {ji
+                echo "暂无";
+              }
+              for($i=0;$i<count($v_sign_row);$i++)
+                {
+                  echo "<div class='act-media'>";
+                  echo "<a class='pull-left' href='#'>";
+                  echo "<img class='media-object act-thumb' src='images/photos/user1.png' alt='' /></a>";
+                  echo "<div class='media-body act-media-body'>";
+                  echo "<strong>".$v_sign_row[$i]['stuname']."</strong>";
+                  echo "<strong>";
+                  if($v_sign_row[$i]['static']=='1'){
+                    echo "进入";
+                  }else{
+                    echo "离开";
+                  }
+                  echo "</strong>. <br />";
+                  echo "<small class='text-muted'>".$v_stu_laboratory_row[$i]['time']."</small>";
+                  echo "</div></div>";
+                }
+               ?>
             </div><!-- activity-list -->
 
           </div>
