@@ -17,7 +17,8 @@
           "startTime"=>$_POST['addtime'],
           "endTime"=>$_POST['leavetime'],
           "laboratoryid"=>$_POST['laboratory'],
-          "maxStunum"=>$_POST['maxnum']
+          "maxStunum"=>$_POST['maxnum'],
+          "info"=>$_POST['info']
         );
         if($db->save("t_project",$data))
         {
@@ -166,6 +167,12 @@
               <label class="col-sm-3 control-label">结束时间</label>
               <div class="col-sm-6">
                 <input type="date" class="form-control" name="leavetime"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label">介绍</label>
+              <div class="col-sm-6">
+                <textarea class="form-control" rows="5" name="info"></textarea>
               </div>
             </div>
             <div class="form-group">

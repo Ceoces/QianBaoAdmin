@@ -103,12 +103,12 @@
                       for ($i=0; $i < count($row); $i++) 
                       { 
                         echo "<tr class='odd gradeX'>";
-                        echo "<td><a href='proinfo.php?id=" .$row[$i]['id']."'>".$row[$i]['proname']."</a></td>";
+                        echo "<td><a href='proinfo.php?id=" .$row[$i]['proid']."'>".$row[$i]['proname']."</a></td>";
                         echo "<td>".$row[$i]['teachername']."</td>";
                         echo "<td><a href='laboratoryinfo.php?id=".$row[$i]['laboratoryid']."'>".$row[$i]['laboratoryname']."</a></td>";
                         echo "<td>".$row[$i]['startTime']."</td>";
                         echo "<td>".$row[$i]['endTime']."</td>";
-                        echo "<td><button class='btn btn-warning btn-sm'>修改</button>&nbsp;&nbsp;&nbsp;&nbsp;<a href='delete.php?obj=project&id=".$row[$i]['id']."'><button class='btn btn-danger btn-sm' data-toggle='modal' data-target='#myModal'>删除</button></a></td>";
+                        echo "<td><a href='changepro.php?id=".$row[$i]['proid']."'><button class='btn btn-warning btn-sm'>修改</button></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='delete.php?obj=project&id=".$row[$i]['proid']."'><button class='btn btn-danger btn-sm' data-toggle='modal' data-target='#myModal'>删除</button></a></td>";
                         echo "</tr>";
                       }
                  ?>

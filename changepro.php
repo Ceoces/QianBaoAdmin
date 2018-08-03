@@ -7,22 +7,27 @@
     echo "数据库连接错误";
     die;
   }
-  //添加学生
-    if(isset($_POST['name'])&&$_POST['name']!=""&&isset($_POST['teacher'])&&$_POST['teacher']!=""&&isset($_POST['maxnum'])&&$_POST['maxnum']!="")
+
+  //添加项目
+    if(isset($_POST['name'])&&isset($_POST['teacher'])&&isset($_POST['addtime'])&&isset($_POST['leavetime'])&&isset($_POST['laboratory'])&&isset($_POST['maxnum']))
       {
         $data=array(
           "name"=>$_POST['name'],
           "teacherid"=>$_POST['teacher'],
-          "maxnum"=>$_POST['maxnum'],
+          "startTime"=>$_POST['addtime'],
+          "endTime"=>$_POST['leavetime'],
+          "laboratoryid"=>$_POST['laboratory'],
+          "maxStunum"=>$_POST['maxnum'],
           "info"=>$_POST['info']
         );
-        if($db->save("t_laboratory",$data))
+        if($db->update("t_project",$data,"id=".$_GET['id']))
         {
-          header('location:laboratorytable.php');
+          header('location:proinfo.php?id='.$_GET['id']);
         }
       }
-  $sql1="select * from t_teacher";
-  $row1=$db->findAll($sql1);
+
+      $inf_sql="select * from v_project where proid=".$_GET['id'];
+      $inf_row=$db->findAll($inf_sql);
 ?>
 
 <!DOCTYPE html>
@@ -75,13 +80,13 @@
     </div><!-- headerbar -->
       
     <div class="pageheader">
-      <h2><i class="fa fa-home"></i> 添加实验室 </h2>
+      <h2><i class="fa fa-home"></i> 添加项目信息 </h2>
       <div class="breadcrumb-wrapper">
         <span class="label">位置：</span>
         <ol class="breadcrumb">
-          <li><a href="index.php">主页</a></li>
-          <li>实验室管理</li>
-          <li class="active">添加实验室</li>
+          <li><a href="index.html">主页</a></li>
+          <li><a href="protable.php">项目信息管理</a></li>
+          <li class="active">添加项目信息</li>
         </ol>
       </div>
     </div>
@@ -91,59 +96,91 @@
         <div class="panel-heading">
 
           <div class="panel-btns">
-            <a href="laboratorytable.php"><button class="btn btn-primary" style="float: right;">查看实验室</button></a>
+            <a href="protable.php"><button class="btn btn-primary" style="float: right;">查看项目信息</button></a>
           </div>
-          <h3 class="panel-title">添加实验室</h4>
+          <h3 class="panel-title">添加项目信息</h4>
         </div>
         <div class="panel-body panel-body-nopadding">
           
-          <form id="form" class="form-horizontal form-bordered" method="post" action="addlaboratory.php">
+          <form id="form" class="form-horizontal form-bordered" method="post" action="changepro.php?id=<?php echo $_GET['id']; ?>">
             
             <div class="form-group">
-              <label class="col-sm-3 control-label">实验室</label>
+              <label class="col-sm-3 control-label">项目名称</label>
               <div class="col-sm-6">
-                <input type="text" placeholder="实验室" class="form-control" name="name" />
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label class="col-sm-3 control-label">人数上限</label>
-              <div class="col-sm-6">
-                <input type="text" class="form-control" name="maxnum" />
+                <input type="text" placeholder="项目名称" class="form-control" name="name" value="<?php echo $inf_row[0]['proname'] ?>" />
               </div>
             </div>
 
             <div class="form-group">
               <label class="col-sm-3 control-label">教师</label>
               <div class="col-sm-6">
-                <input list="bj1" placeholder="教师" class="form-control" name="teacher" />
+                <input list="bj1" placeholder="教师" class="form-control" name="teacher" value="<?php echo $inf_row[0]['teacherid'] ?>" />
                 <datalist id="bj1">
-                      <?php 
-                        if (is_root) {
-                          for($i=0;$i<count($row1);$i++){
-                            echo "<option value='".$row1[$i]['id']."'>".$row1[$i]['name']."</option>";
-                          }
-                        } else{
-                          echo "<option value='".$id."'>".$name."</option>";
-                        }
+                    <?php 
+                      if(is_root){
+                        $sql1="select * from t_teacher";
+                      }else{
+                        $sql1="select * from t_teacher where id='".$_SESSION['id']."'";
+                      }
+                      $row1=$db->findAll($sql1);
+                      for($i=0;$i<count($row1);$i++){
+                        echo "<option value='".$row1[$i]['id']."'>".$row1[$i]['name']."</option>";
+                      }
                      ?>
                 </datalist> 
-                
               </div>
             </div>
 
+            <div class="form-group">
+              <label class="col-sm-3 control-label">最大人数</label>
+              <div class="col-sm-6">
+                <input type="text" placeholder="0" class="form-control" name="maxnum" value="<?php echo $inf_row[0]['maxStuNum'] ?>" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-sm-3 control-label">地点</label>
+              <div class="col-sm-6">
+                <input list="bj2" placeholder="实验室" class="form-control" name="laboratory" value="<?php echo $inf_row[0]['laboratoryid'] ?>" />
+                <datalist id="bj2">
+                    <?php 
+                      if(is_root){
+                        $sql2="select * from t_laboratory";
+                      }else{
+                        $sql2="select * from t_laboratory where teacherid='".$_SESSION['id']."'";
+                      }
+                      $row2=$db->findAll($sql2);
+                      for($i=0;$i<count($row2);$i++){
+                        echo "<option value='".$row2[$i]['id']."'>".$row2[$i]['name']."</option>";
+                      }
+                     ?>
+                </datalist> 
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-sm-3 control-label">开始时间</label>
+              <div class="col-sm-6">
+                <input type="date" class="form-control" name="addtime" value="<?php echo $inf_row[0]['startTime'] ?>" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label">结束时间</label>
+              <div class="col-sm-6">
+                <input type="date" class="form-control" name="leavetime" value="<?php echo $inf_row[0]['endTime'] ?>"/>
+              </div>
+            </div>
             <div class="form-group">
               <label class="col-sm-3 control-label">介绍</label>
               <div class="col-sm-6">
-                <textarea class="form-control" rows="5" name="info"></textarea>
+                <textarea class="form-control" rows="5" name="info" value="<?php echo $inf_row[0]['info'] ?>"></textarea>
               </div>
             </div>
-
             <div class="form-group">
             <div class="row">
               <div class="col-sm-6 col-sm-offset-4">
-              	<button class="btn btn-primary btn-lg" onclick="btn_submit();">提交</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              	<button class="btn btn-default btn-lg" onclick="btn_reset();">取消</button>
+                <button class="btn btn-primary btn-lg" onclick="btn_submit();">提交</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <button class="btn btn-default btn-lg" onclick="btn_reset();">取消</button>
               </div>
             </div>
           </div>
@@ -200,29 +237,29 @@ jQuery(document).ready(function(){
   
   // Color Picker
   if(jQuery('#colorpicker').length > 0) {
-	 jQuery('#colorSelector').ColorPicker({
-			onShow: function (colpkr) {
-				jQuery(colpkr).fadeIn(500);
-				return false;
-			},
-			onHide: function (colpkr) {
-				jQuery(colpkr).fadeOut(500);
-				return false;
-			},
-			onChange: function (hsb, hex, rgb) {
-				jQuery('#colorSelector span').css('backgroundColor', '#' + hex);
-				jQuery('#colorpicker').val('#'+hex);
-			}
-	 });
+   jQuery('#colorSelector').ColorPicker({
+      onShow: function (colpkr) {
+        jQuery(colpkr).fadeIn(500);
+        return false;
+      },
+      onHide: function (colpkr) {
+        jQuery(colpkr).fadeOut(500);
+        return false;
+      },
+      onChange: function (hsb, hex, rgb) {
+        jQuery('#colorSelector span').css('backgroundColor', '#' + hex);
+        jQuery('#colorpicker').val('#'+hex);
+      }
+   });
   }
   
   // Color Picker Flat Mode
-	jQuery('#colorpickerholder').ColorPicker({
-		flat: true,
-		onChange: function (hsb, hex, rgb) {
-			jQuery('#colorpicker3').val('#'+hex);
-		}
-	});
+  jQuery('#colorpickerholder').ColorPicker({
+    flat: true,
+    onChange: function (hsb, hex, rgb) {
+      jQuery('#colorpicker3').val('#'+hex);
+    }
+  });
    
   // Date Picker
   jQuery('#datepicker').datepicker();

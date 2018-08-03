@@ -8,6 +8,10 @@
     die;
   }
   //添加学生
+    if(!isset($_GET['id']))
+    {
+      header("location:laboratorytable.php");
+    }
     if(isset($_POST['name'])&&$_POST['name']!=""&&isset($_POST['teacher'])&&$_POST['teacher']!=""&&isset($_POST['maxnum'])&&$_POST['maxnum']!="")
       {
         $data=array(
@@ -16,13 +20,15 @@
           "maxnum"=>$_POST['maxnum'],
           "info"=>$_POST['info']
         );
-        if($db->save("t_laboratory",$data))
+        if($db->update("t_laboratory",$data,"id=".$_GET['id']))
         {
-          header('location:laboratorytable.php');
+          header("location:laboratoryinfo.php?id=".$_GET['id']);
         }
       }
   $sql1="select * from t_teacher";
   $row1=$db->findAll($sql1);
+  $sql2="select * from t_laboratory where id=".$_GET['id'];
+  $row2=$db->findAll($sql2);
 ?>
 
 <!DOCTYPE html>
@@ -97,26 +103,26 @@
         </div>
         <div class="panel-body panel-body-nopadding">
           
-          <form id="form" class="form-horizontal form-bordered" method="post" action="addlaboratory.php">
+          <form id="form" class="form-horizontal form-bordered" method="post" action="changelaboratory.php?id=<?php echo $_GET['id']; ?>">
             
             <div class="form-group">
               <label class="col-sm-3 control-label">实验室</label>
               <div class="col-sm-6">
-                <input type="text" placeholder="实验室" class="form-control" name="name" />
+                <input type="text" placeholder="实验室" class="form-control" name="name" value="<?php echo $row2[0]['name']; ?>" />
               </div>
             </div>
 
             <div class="form-group">
               <label class="col-sm-3 control-label">人数上限</label>
               <div class="col-sm-6">
-                <input type="text" class="form-control" name="maxnum" />
+                <input type="text" class="form-control" name="maxnum" value="<?php echo $row2[0]['maxnum']; ?>" />
               </div>
             </div>
 
             <div class="form-group">
               <label class="col-sm-3 control-label">教师</label>
               <div class="col-sm-6">
-                <input list="bj1" placeholder="教师" class="form-control" name="teacher" />
+                <input list="bj1" placeholder="教师" class="form-control" name="teacher" value="<?php echo $row2[0]['teacherid']; ?>" />
                 <datalist id="bj1">
                       <?php 
                         if (is_root) {
@@ -135,15 +141,15 @@
             <div class="form-group">
               <label class="col-sm-3 control-label">介绍</label>
               <div class="col-sm-6">
-                <textarea class="form-control" rows="5" name="info"></textarea>
+                <textarea class="form-control" rows="5" name="info" value="<?php echo $row2[0]['info']; ?>"></textarea>
               </div>
             </div>
 
             <div class="form-group">
             <div class="row">
               <div class="col-sm-6 col-sm-offset-4">
-              	<button class="btn btn-primary btn-lg" onclick="btn_submit();">提交</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              	<button class="btn btn-default btn-lg" onclick="btn_reset();">取消</button>
+                <button class="btn btn-primary btn-lg">修改</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <button class="btn btn-default btn-lg" onclick="btn_reset();">取消</button>
               </div>
             </div>
           </div>
@@ -200,29 +206,29 @@ jQuery(document).ready(function(){
   
   // Color Picker
   if(jQuery('#colorpicker').length > 0) {
-	 jQuery('#colorSelector').ColorPicker({
-			onShow: function (colpkr) {
-				jQuery(colpkr).fadeIn(500);
-				return false;
-			},
-			onHide: function (colpkr) {
-				jQuery(colpkr).fadeOut(500);
-				return false;
-			},
-			onChange: function (hsb, hex, rgb) {
-				jQuery('#colorSelector span').css('backgroundColor', '#' + hex);
-				jQuery('#colorpicker').val('#'+hex);
-			}
-	 });
+   jQuery('#colorSelector').ColorPicker({
+      onShow: function (colpkr) {
+        jQuery(colpkr).fadeIn(500);
+        return false;
+      },
+      onHide: function (colpkr) {
+        jQuery(colpkr).fadeOut(500);
+        return false;
+      },
+      onChange: function (hsb, hex, rgb) {
+        jQuery('#colorSelector span').css('backgroundColor', '#' + hex);
+        jQuery('#colorpicker').val('#'+hex);
+      }
+   });
   }
   
   // Color Picker Flat Mode
-	jQuery('#colorpickerholder').ColorPicker({
-		flat: true,
-		onChange: function (hsb, hex, rgb) {
-			jQuery('#colorpicker3').val('#'+hex);
-		}
-	});
+  jQuery('#colorpickerholder').ColorPicker({
+    flat: true,
+    onChange: function (hsb, hex, rgb) {
+      jQuery('#colorpicker3').val('#'+hex);
+    }
+  });
    
   // Date Picker
   jQuery('#datepicker').datepicker();

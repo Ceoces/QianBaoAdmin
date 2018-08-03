@@ -101,7 +101,7 @@
                         echo "<td>".$row[$i]['newtime']."</td>";
                         echo "<td>".$row[$i]['stunum']."</td>";
                         echo "<td>".$row[$i]['maxnum']."</td>";
-                        echo "<td><button class='btn btn-warning btn-sm'>修改</button>&nbsp;&nbsp;&nbsp;&nbsp;<a href='delete.php?obj=laboratory&id=".$row[$i]['id']."'><button class='btn btn-danger btn-sm'>删除</button></a></td>";
+                        echo "<td><a href='changelaboratory.php?id=".$row[$i]['id']."'><button class='btn btn-warning btn-sm'>修改</button></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='delete.php?obj=laboratory&id=".$row[$i]['id']."'><button class='btn btn-danger btn-sm'>删除</button></a></td>";
                         echo "</tr>";
                       }
                  ?>
