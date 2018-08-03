@@ -11,7 +11,7 @@
  Target Server Version : 50547
  File Encoding         : 65001
 
- Date: 02/08/2018 14:37:26
+ Date: 03/08/2018 12:57:54
 */
 
 SET NAMES utf8mb4;
@@ -30,13 +30,14 @@ CREATE TABLE `t_laboratory`  (
   `stunum` int(11) NOT NULL DEFAULT 0,
   `newtime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 22 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 24 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of t_laboratory
 -- ----------------------------
 INSERT INTO `t_laboratory` VALUES (1, '826', 'admin', 30, NULL, 0, '2018-07-23 10:46:05');
-INSERT INTO `t_laboratory` VALUES (2, '101', 'su', 100, NULL, 0, '2018-07-23 11:01:05');
+INSERT INTO `t_laboratory` VALUES (2, '101', 'su', 20, '101实验室介绍', 0, '2018-08-03 09:57:10');
+INSERT INTO `t_laboratory` VALUES (22, '创新实验室', 'su', 12, '创新实验室介绍', 0, '2018-08-03 09:15:55');
 
 -- ----------------------------
 -- Table structure for t_project
@@ -52,13 +53,14 @@ CREATE TABLE `t_project`  (
   `startTime` datetime NOT NULL COMMENT '项目开始时间',
   `endTime` datetime NULL DEFAULT NULL COMMENT '项目截止时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of t_project
 -- ----------------------------
-INSERT INTO `t_project` VALUES (1, '实验室签报系统', 'admin', 0, NULL, 30, '2018-07-24 09:18:56', '2018-09-29 09:18:59');
-INSERT INTO `t_project` VALUES (2, '项目2', 'su', 0, NULL, 10, '2018-07-24 10:41:13', '2018-07-28 10:41:16');
+INSERT INTO `t_project` VALUES (1, '实验室签报系统', 'admin', 1, '开放实验室签报系统', 30, '2018-07-24 09:18:56', '2018-09-29 09:18:59');
+INSERT INTO `t_project` VALUES (2, '项目2', 'su', 2, NULL, 10, '2018-07-24 10:41:13', '2018-07-28 10:41:16');
+INSERT INTO `t_project` VALUES (5, '测试项目a', 'admin', 2, '测试项目介绍', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00');
 
 -- ----------------------------
 -- Table structure for t_signtable
@@ -72,7 +74,14 @@ CREATE TABLE `t_signtable`  (
   `laboratoryid` int(11) NOT NULL COMMENT '实验室id',
   `seat` char(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '座位',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Fixed;
+) ENGINE = MyISAM AUTO_INCREMENT = 9 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Fixed;
+
+-- ----------------------------
+-- Records of t_signtable
+-- ----------------------------
+INSERT INTO `t_signtable` VALUES (8, '1', '2018-08-02 15:50:16', 1, 1, '1');
+INSERT INTO `t_signtable` VALUES (7, '3', '2018-08-02 15:50:00', 0, 2, '1');
+INSERT INTO `t_signtable` VALUES (6, '3', '2018-08-02 15:49:51', 1, 2, '1');
 
 -- ----------------------------
 -- Table structure for t_stu_laboratory
@@ -191,9 +200,11 @@ t_project.info,
 t_project.maxStuNum,
 t_project.startTime,
 t_project.endTime,
-t_project.id,
+t_project.id AS proid,
+t_laboratory.id AS laboratoryid,
 t_laboratory.`name` AS laboratoryname,
-t_laboratory.id AS laboratoryid
+t_teacher.phone,
+t_teacher.email
 FROM
 t_teacher
 INNER JOIN t_project ON t_project.teacherid = t_teacher.id
@@ -231,7 +242,8 @@ t_student.sex,
 t_student.phone,
 t_student.email,
 t_student.info,
-t_laboratory.`name` AS laboratoryname
+t_laboratory.`name` AS laboratoryname,
+t_teacher.id AS teacherid
 FROM
 t_student
 INNER JOIN t_teacher ON t_teacher.id = t_student.teacherid
@@ -267,7 +279,9 @@ CREATE ALGORITHM = UNDEFINED DEFINER = `root`@`localhost` SQL SECURITY DEFINER V
 t_student.`name` AS stuname,
 t_project.`name` AS proname,
 t_stu_pro.time,
-t_student.class
+t_student.class,
+t_stu_pro.studentid,
+t_stu_pro.proid
 FROM
 t_stu_pro
 INNER JOIN t_student ON t_student.id = t_stu_pro.studentid
