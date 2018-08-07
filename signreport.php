@@ -19,9 +19,13 @@
 
   <title>实验室签报系统</title>
 
-  <link href="css/style.default.css" rel="stylesheet">
-  <link href="css/jquery.datatables.css" rel="stylesheet">
-  <link href="css/morris.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.default.css" />
+  
+  <link rel="stylesheet" href="css/bootstrap-fileupload.min.css" />
+  <link rel="stylesheet" href="css/bootstrap-timepicker.min.css" />
+  <link rel="stylesheet" href="css/jquery.tagsinput.css" />
+  <link rel="stylesheet" href="css/colorpicker.css" />
+  <link rel="stylesheet" href="css/dropzone.css" />
 
   <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!--[if lt IE 9]>
@@ -62,61 +66,89 @@
         </ol>
       </div>
     </div>
+
+    
     
     <div class="contentpanel">
+      <div class="row">
+        
+        <div class="col-sm-6 col-md-3">
+          <div class="panel panel-success panel-stat">
+            <div class="panel-heading">
+              
+              <div class="stat">
+                <div class="row">
+                  <div class="col-xs-4">
+                    <img src="images/is-user.png" alt="" />
+                  </div>
+                  <div class="col-xs-8">
+                    <small class="stat-label">今日签报人数</small>
+                    <h1>90</h1>
+                  </div>
+                </div><!-- row -->
+                
+                <div class="mb15"></div>
+                
+                <div class="row">
+                  <div class="col-xs-12">
+                    <small class="stat-label">人均使用时间（分钟）</small>
+                    <h4>30.27</h4>
+                  </div>
+                </div><!-- row -->
+              </div><!-- stat -->
+              
+            </div><!-- panel-heading -->
+          </div><!-- panel -->
+        </div><!-- col-sm-6 -->
+        <div class="col-sm-6 col-md-3">
+          <div class="panel panel-primary panel-stat">
+            <div class="panel-heading">
+              
+              <div class="stat">
+                <div class="row">
+                  <div class="col-xs-4">
+                    <img src="images/is-document.png" alt="" />
+                  </div>
+                  <div class="col-xs-8">
+                    <small class="stat-label">项目总数</small>
+                    <h1>3</h1>
+                  </div>
+                </div><!-- row -->
+                
+                <div class="mb15"></div>
+                
+                <small class="stat-label">项目完成度（百分比）</small>
+                <h4>34.23%</h4>
+                  
+              </div><!-- stat -->
+              
+            </div><!-- panel-heading -->
+          </div><!-- panel -->
+        </div>
+      </div>
       <div class="panel panel-default">
         <div class="panel-heading">
           <div class="panel-btns">
             <a href="#" class="panel-close">&times;</a>
             <a href="#" class="minimize">&minus;</a>
           </div>
-          <h4 class="panel-title">近期签报情况</h4>
-        </div><!-- panel-heading -->
-        <div class="panel-body">
-          <div class="table-responsive">
-          <table class="table" id="table2">
-              <thead>
-                 <tr>
-                    <th>签报时间</th>
-                    <th>学生姓名</th>
-                    <th>签报状态</th>
-                    <th>实验室</th>
-                    <th>座位</th>
-                    <th>指导教师</th>
-                 </tr>
-              </thead>
-              <tbody>
-                 <?php  
-                 $sql="select * from v_signtable order by time desc limit 0,30";
-                  if($db->connect($dbhost,$dbuser,$dbpassword,$dbname))
-                  {
-                    echo "数据库连接错误";
-                    die;
-                  }
-                  $row=$db->findAll($sql);
-                      for ($i=0; $i < count($row); $i++) 
-                      { 
-                        echo "<tr class='odd gradeX'>";
-                        echo "<td>".$row[$i]['time']."</td>";
-                        echo "<td><a href='proinfo.php'>".$row[$i]['stuname']."</a></td>";
-                        if($row[$i]['static']=="1"){
-                          echo "<td><p class='text-success'>进入</p></td>";
-                        }
-                        else{
-                          echo "<td><p class='text-danger'>离开</p></td>";
-                        }
-                        echo "<td>".$row[$i]['laboratoryname']."</td>";
-                        echo "<td>".$row[$i]['seat']."</td>";
-                        echo "<td>".$row[$i]['teachername']."</td>";
-                        echo "</tr>";
-                      }
-                 ?>
-              </tbody>
-           </table>
-          </div><!-- table-responsive -->
-          
-        </div><!-- panel-body -->
-      </div><!-- panel -->    
+          <h4 class="panel-title">选择实验室</h4>
+        </div>
+        <div class="panel-body panel-body-nopadding">
+          <form class="form-horizontal form-bordered">
+            
+            <div class="form-group">
+              <label class="col-sm-3 control-label">选择一个实验室：</label>
+              <div class="col-sm-5">
+                <select class="form-control chosen-select">
+                  <option value=""></option>
+                </select>
+              </div>
+            </div>
+
+          </form>
+        </div>
+      </div>
     </div><!-- contentpanel -->
     
   </div><!-- mainpanel -->
@@ -126,6 +158,7 @@
 
 <script src="js/jquery-1.10.2.min.js"></script>
 <script src="js/jquery-migrate-1.2.1.min.js"></script>
+<script src="js/jquery-ui-1.10.3.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/modernizr.min.js"></script>
 <script src="js/jquery.sparkline.min.js"></script>
@@ -136,54 +169,88 @@
 <script src="js/jquery.datatables.min.js"></script>
 <script src="js/chosen.jquery.min.js"></script>
 
-<script src="js/flot/flot.min.js"></script>
-<script src="js/flot/flot.resize.min.js"></script>
-<script src="js/flot/flot.symbol.min.js"></script>
-<script src="js/flot/flot.crosshair.min.js"></script>
-<script src="js/flot/flot.categories.min.js"></script>
-<script src="js/flot/flot.pie.min.js"></script>
-<script src="js/morris.min.js"></script>
-<script src="js/raphael-2.1.0.min.js"></script>
+<script src="js/jquery.autogrow-textarea.js"></script>
+<script src="js/bootstrap-fileupload.min.js"></script>
+<script src="js/bootstrap-timepicker.min.js"></script>
+<script src="js/jquery.maskedinput.min.js"></script>
+<script src="js/jquery.tagsinput.min.js"></script>
+<script src="js/jquery.mousewheel.js"></script>
+<script src="js/chosen.jquery.min.js"></script>
+<script src="js/dropzone.min.js"></script>
+<script src="js/colorpicker.js"></script>
+
 
 <script src="js/custom.js"></script>
-<script src="js/charts.js"></script>
-<script>
-  jQuery(document).ready(function() {
+
+<script type="text/javascript">
+jQuery(document).ready(function(){
     
-    jQuery('#table1').dataTable();
-    
-    jQuery('#table2').dataTable({
-      "sPaginationType": "full_numbers"
-    });
-    
+  jQuery(".chosen-select").chosen({'width':'100%','white-space':'nowrap'});
     // Chosen Select
     jQuery("select").chosen({
       'min-width': '100px',
       'white-space': 'nowrap',
       disable_search_threshold: 10
     });
-    
-    // Delete row in a table
-    jQuery('.delete-row').click(function(){
-      var c = confirm("Continue delete?");
-      if(c)
-        jQuery(this).closest('tr').fadeOut(function(){
-          jQuery(this).remove();
-        });
-        
+  
+  // Tags Input
+  jQuery('#tags').tagsInput({width:'auto'});
+   
+  // Textarea Autogrow
+  jQuery('#autoResizeTA').autogrow();
+  
+  // Color Picker
+  if(jQuery('#colorpicker').length > 0) {
+   jQuery('#colorSelector').ColorPicker({
+      onShow: function (colpkr) {
+        jQuery(colpkr).fadeIn(500);
         return false;
-    });
-    
-    // Show aciton upon row hover
-    jQuery('.table-hidaction tbody tr').hover(function(){
-      jQuery(this).find('.table-action-hide a').animate({opacity: 1});
-    },function(){
-      jQuery(this).find('.table-action-hide a').animate({opacity: 0});
-    });
+      },
+      onHide: function (colpkr) {
+        jQuery(colpkr).fadeOut(500);
+        return false;
+      },
+      onChange: function (hsb, hex, rgb) {
+        jQuery('#colorSelector span').css('backgroundColor', '#' + hex);
+        jQuery('#colorpicker').val('#'+hex);
+      }
+   });
+  }
   
-  
+  // Color Picker Flat Mode
+  jQuery('#colorpickerholder').ColorPicker({
+    flat: true,
+    onChange: function (hsb, hex, rgb) {
+      jQuery('#colorpicker3').val('#'+hex);
+    }
   });
-</script>
+   
+  // Date Picker
+  jQuery('#datepicker').datepicker();
+  
+  jQuery('#datepicker-inline').datepicker();
+  
+  jQuery('#datepicker-multiple').datepicker({
+    numberOfMonths: 3,
+    showButtonPanel: true
+  });
+  
+  // Spinner
+  var spinner = jQuery('#spinner').spinner();
+  spinner.spinner('value', 0);
+  
+  // Input Masks
+  jQuery("#date").mask("99/99/9999");
+  jQuery("#phone").mask("(999) 999-9999");
+  jQuery("#ssn").mask("999-99-9999");
+  
+  // Time Picker
+  jQuery('#timepicker').timepicker({defaultTIme: false});
+  jQuery('#timepicker2').timepicker({showMeridian: false});
+  jQuery('#timepicker3').timepicker({minuteStep: 15});
 
+  
+});
+</script>
 </body>
 </html>

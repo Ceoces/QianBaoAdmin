@@ -4,8 +4,8 @@
   include_once('mysql.class.php');
   if (isset($_GET['id'])) {
     $sql="select * from v_laboratory where id=".$_GET['id'];
-  }
-  $v_laboratory_row=$db->findAll($sql);
+  
+}  $v_laboratory_row=$db->findAll($sql);
 ?>
 
 <!DOCTYPE html>
@@ -64,8 +64,23 @@
     <div class="contentpanel">
       
       <div class="row">
+
+        <div class="col-sm-3"> 
+          <img src="images/photos/profile-1.png" class="thumbnail img-responsive" alt="">
+          <div class="mb-30"></div>
+          <h4 ><strong>实验室介绍</strong></h4>
+          <div class="mb-30"></div>
+          <p class="mb30">
+            <?php 
+                  if($v_laboratory_row[0]['info']!=""){
+                    echo $v_laboratory_row[0]['info']; 
+                  }else {
+                    echo "暂无";
+                  }?>
+          </p>
+        </div>
         
-        <div class="col-sm-12">
+        <div class="col-sm-9">
           
           <div class="profile-header">
             <h2 class="profile-name"><?php echo $v_laboratory_row[0]['laboratoryname']; ?></h2>
@@ -101,15 +116,20 @@
           
           <!-- Nav tabs -->
         <ul class="nav nav-tabs nav-justified nav-profile">
+          <li><a href="#followers" data-toggle="tab">当前人员</a></li>
           <li class="active"><a href="#activities" data-toggle="tab">签到情况</a></li>
+          <li><a href="#followers" data-toggle="tab">签报统计</a></li>
           <li><a href="#followers" data-toggle="tab">成员</a></li>
+
+
         </ul>
-        
+
         <!-- Tab panes -->
         <div class="tab-content">
           <div class="tab-pane active" id="activities">
             <div class="activity-list">
               <?php 
+              //签到情况
               $page=isset($_GET['page'])?(int)$_GET['page']:30;
               $sql="select * from v_signtable where laboratoryid=".$_GET['id']." order by time    desc limit 0,".$page;
               $v_sign_row=$db->findAll($sql);
@@ -147,6 +167,37 @@
             ?>
           </div>
           <div class="tab-pane" id="followers">
+            
+            <div class="follower-list">
+              
+              <?php
+                $sql="select * from v_stu_laboratory where laboratoryid=".$v_laboratory_row[0]['id'];
+                $v_stu_laboratory_row=$db->findAll($sql);
+
+                if (count($v_stu_laboratory_row)==0) {
+                  echo "暂无成员";
+                }
+                for($i=0;$i<count($v_stu_laboratory_row);$i++)
+                {
+                  echo "<div class='media'>";
+                  echo "<a class='pull-left' href='#'>";
+                  echo "<img class='media-object' src='holder.js/100x125.html' alt='' /></a>";
+                  echo "<div class='media-body'>";
+                  echo "<h3 class='follower-name'>".$v_stu_laboratory_row[$i]['stuname']."</h3>";
+                  echo "<div class='profile-location'><i class='fa fa-map-marker'></i> ".$v_stu_laboratory_row[$i]['class']."</div>";
+                  echo "<div class='profile-position'><i class='fa fa-briefcase'></i> ".$v_stu_laboratory_row[$i]['proname']."</div>";
+                  echo "<div class='profile-location'><i class='fa  fa-clock-o'></i> ".$v_stu_laboratory_row[$i]['time']."</div>";
+                  echo "<div class='mb20'></div>";
+                  echo "<button class='btn btn-sm btn-success mr5'><i class='fa fa-user'></i>详细资料</button>";
+                  echo "<button class='btn btn-sm btn-white'><i class='fa fa-sign-out'></i>移出</button>";
+                  echo "</div></div>";
+                }
+              ?>
+              
+
+            </div><!--follower-list -->
+
+            <div class="tab-pane" id="now">
             
             <div class="follower-list">
               

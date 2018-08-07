@@ -64,8 +64,13 @@
     <div class="contentpanel">
       
       <div class="row">
+
+        <div class="col-sm-3">
+          <img src="images/photos/profile-1.png" class="thumbnail img-responsive" alt="">
+
+        </div>
         
-        <div class="col-sm-12">
+        <div class="col-sm-9">
           
           <div class="profile-header">
             <h2 class="profile-name"><?php echo $v_pro_row[0]['proname']; ?></h2>
