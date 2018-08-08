@@ -48,13 +48,7 @@
   
   <div class="mainpanel">
     
-    <div class="headerbar">
-      
-      <a class="menutoggle"><i class="fa fa-bars"></i></a>
-      
-      <?php require_once('headerright.php'); ?>
-      
-    </div><!-- headerbar -->
+    <?php require_once('headerright.php'); ?>
       
     <div class="pageheader">
       <h2><i class="fa fa-home"></i> 实验室签报情况 </h2>
@@ -87,14 +81,8 @@
                   </div>
                 </div><!-- row -->
                 
-                <div class="mb15"></div>
-                
-                <div class="row">
-                  <div class="col-xs-12">
-                    <small class="stat-label">人均使用时间（分钟）</small>
-                    <h4>30.27</h4>
-                  </div>
-                </div><!-- row -->
+
+
               </div><!-- stat -->
               
             </div><!-- panel-heading -->
@@ -115,11 +103,6 @@
                   </div>
                 </div><!-- row -->
                 
-                <div class="mb15"></div>
-                
-                <small class="stat-label">项目完成度（百分比）</small>
-                <h4>34.23%</h4>
-                  
               </div><!-- stat -->
               
             </div><!-- panel-heading -->
@@ -135,16 +118,34 @@
           <h4 class="panel-title">选择实验室</h4>
         </div>
         <div class="panel-body panel-body-nopadding">
-          <form class="form-horizontal form-bordered">
+          <form class="form-horizontal form-bordered" action="laboratoryinfo.php" method="get">
             
             <div class="form-group">
               <label class="col-sm-3 control-label">选择一个实验室：</label>
               <div class="col-sm-5">
-                <select class="form-control chosen-select">
-                  <option value=""></option>
+                <select class="form-control chosen-select" name="id">
+                  <?php 
+                  if(is_root){
+                    $sql="select id,laboratoryname from v_laboratory";
+                  } else {
+                    $sql="select id,laboratoryname from  v_laboratory where teacherid=".$$_SESSION['id'];
+                  }
+                  $row=$db->findAll($sql);
+                  for($i=0;$i<count($row);$i++)
+                  {
+                    echo "<option value='".$row[$i]['id']."'>".$row[$i]['laboratoryname']."</option>";
+                  }
+                  ?>
                 </select>
               </div>
             </div>
+
+            <div class="form-group">
+              <div class="col-sm-4 col-sm-offset-4">
+                <button class="btn btn-primary">确定</button>
+              </div>
+            </div>
+
 
           </form>
         </div>

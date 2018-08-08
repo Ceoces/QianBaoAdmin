@@ -69,13 +69,7 @@
   
   <div class="mainpanel">
     
-    <div class="headerbar">
-      
-      <a class="menutoggle"><i class="fa fa-bars"></i></a>
-      
-      <?php require_once('headerright.php'); ?>
-      
-    </div><!-- headerbar -->
+    <?php require_once('headerright.php'); ?>
 
     <div class="contentpanel">
       

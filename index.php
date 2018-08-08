@@ -33,15 +33,9 @@
   <?php require_once('leftpanel.php'); ?>
   
   <div class="mainpanel">
-    
-    <div class="headerbar">
-      
-      <a class="menutoggle"><i class="fa fa-bars"></i></a>
-      
+ 
       <?php require_once('headerright.php'); ?>
-      
-    </div><!-- headerbar -->
-    
+
     <div class="pageheader">
       <h2><i class="fa fa-home"></i> 主页 </h2>
       <div class="breadcrumb-wrapper">

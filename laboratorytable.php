@@ -38,13 +38,7 @@
   
   <div class="mainpanel">
     
-    <div class="headerbar">
-      
-      <a class="menutoggle"><i class="fa fa-bars"></i></a>
-      
-      <?php require_once('headerright.php'); ?>
-      
-    </div><!-- headerbar -->
+    <?php require_once('headerright.php'); ?>
         
     <div class="pageheader">
       <h2><i class="fa fa-home"></i> 查看实验室 </h2>

@@ -1,4 +1,10 @@
-<div class="header-right">
+<div class="headerbar">
+      
+      <a class="menutoggle"><i class="fa fa-bars"></i></a>
+       <form class="searchform" action="http://themepixels.com/demo/webpage/bracket/index.html" method="post">
+        <input type="text" class="form-control" name="keyword" placeholder="Search here..." />
+      </form>
+      <div class="header-right">
         <ul class="headermenu">
           <li>
             <div class="btn-group">
@@ -26,3 +32,4 @@
           </li>
         </ul>
       </div><!-- header-right -->
+    </div><!-- header-bar -->

@@ -41,13 +41,7 @@
   <?php require_once('leftpanel.php'); ?>
   
   <div class="mainpanel">
-    <div class="headerbar">
-      
-      <a class="menutoggle"><i class="fa fa-bars"></i></a>
-      
-      <?php require_once('headerright.php'); ?>
-      
-    </div>
+    <?php require_once('headerright.php'); ?>
 
     <div class="pageheader">
       <h2><i class="fa fa-home"></i> 实验室信息 </h2>

@@ -4,8 +4,11 @@
   include_once('mysql.class.php');
   if (isset($_GET['id'])) {
     $sql="select * from v_laboratory where id=".$_GET['id'];
-  
-}  $v_laboratory_row=$db->findAll($sql);
+  }  
+  $v_laboratory_row=$db->findAll($sql);
+  $sql2="select * from v_signtable where laboratoryid=".$_GET['id'];
+  $row=$db->findAll($sql2);
+  $len=count($row);
 ?>
 
 <!DOCTYPE html>
@@ -41,13 +44,7 @@
   <?php require_once('leftpanel.php'); ?>
   
   <div class="mainpanel">
-    <div class="headerbar">
-      
-      <a class="menutoggle"><i class="fa fa-bars"></i></a>
-      
-      <?php require_once('headerright.php'); ?>
-      
-    </div>
+    <?php require_once('headerright.php'); ?>
 
     <div class="pageheader">
       <h2><i class="fa fa-home"></i> 实验室信息 </h2>
@@ -66,24 +63,7 @@
       <div class="row">
 
         <div class="col-sm-3"> 
-          <img src="images/photos/profile-1.png" class="thumbnail img-responsive" alt="">
-          <div class="mb-30"></div>
-          <h4 ><strong>实验室介绍</strong></h4>
-          <div class="mb-30"></div>
-          <p class="mb30">
-            <?php 
-                  if($v_laboratory_row[0]['info']!=""){
-                    echo $v_laboratory_row[0]['info']; 
-                  }else {
-                    echo "暂无";
-                  }?>
-          </p>
-        </div>
-        
-        <div class="col-sm-9">
-          
-          <div class="profile-header">
-            <h2 class="profile-name"><?php echo $v_laboratory_row[0]['laboratoryname']; ?></h2>
+          <h2 class="profile-name"><?php echo $v_laboratory_row[0]['laboratoryname']; ?></h2>
             <div class="profile-location"><i class="fa fa-user"></i>
               <?php 
                   if($v_laboratory_row[0]['teachername']!=""){
@@ -110,13 +90,24 @@
             </div>
             
             <div class="mb20"></div>
-          <p class="mb30"><?php echo $v_laboratory_row[0]['info']; ?> </p>
-
-          </div><!-- profile-header -->
+          <div class="mb-30"></div>
+          <h4 ><strong>实验室介绍</strong></h4>
+          <div class="mb-30"></div>
+          <p class="mb30">
+            <?php 
+                  if($v_laboratory_row[0]['info']!=""){
+                    echo $v_laboratory_row[0]['info']; 
+                  }else {
+                    echo "暂无";
+                  }?>
+          </p>
+        </div>
+        
+        <div class="col-sm-9">
           
           <!-- Nav tabs -->
         <ul class="nav nav-tabs nav-justified nav-profile">
-          <li><a href="#followers" data-toggle="tab">当前人员</a></li>
+          <li><a href="#now" data-toggle="tab">当前人员</a></li>
           <li class="active"><a href="#activities" data-toggle="tab">签到情况</a></li>
           <li><a href="#followers" data-toggle="tab">签报统计</a></li>
           <li><a href="#followers" data-toggle="tab">成员</a></li>
@@ -130,8 +121,10 @@
             <div class="activity-list">
               <?php 
               //签到情况
-              $page=isset($_GET['page'])?(int)$_GET['page']:30;
-              $sql="select * from v_signtable where laboratoryid=".$_GET['id']." order by time    desc limit 0,".$page;
+              $page=isset($_GET['page'])?(int)$_GET['page']:0;
+              $begin=$page*10;
+              $sql="select * from v_signtable where laboratoryid=".$_GET['id']." order by time    desc limit ".$begin.",".($begin+10);
+              
               $v_sign_row=$db->findAll($sql);
               if (count($v_sign_row)==0) {
                 echo "暂无";
@@ -153,24 +146,39 @@
                   echo "<small class='text-muted'>".$v_sign_row[$i]['time']."</small>";
                   echo "</div></div>";
                 }
-            
                ?>
+            <center>
+            <ul class="pagination">
+              <li><a href="laboratoryinfo.php?id=<?php echo $_GET['id']; ?>">首页</a></li>
+              <?php 
+              $begin=$page<=(ceil($len/10)-5)?$page:(ceil($len/10)-5);
+              if($begin<0)$begin=0;
+              $end=($begin+5)>$len?$len:($begin+5);
+              if(ceil($len/10)<5){
+                $end=ceil($len/10);
+              }
+              for($i=$begin;$i<$end;$i++)
+              {
+                echo "<li class='";
+                if($i>$len/10) echo"disable"; if($page==$i) echo " active";
+                echo "'>";
+                echo "<a href='laboratoryinfo.php?id=".$_GET['id']."&page=".$i."'>";
+                echo $i+1;
+                echo "</a></li>";
+              }
+               ?>
+               <li><a href="laboratoryinfo.php?id=<?php echo ceil($len/10); ?>">尾页</a></li>
+              </ul>
+            </center>
             
             </div><!-- activity-list -->
-            <?php  
-            $sql="select * from v_signtable where laboratoryid=".$_GET['id'];
-            $v_allsign_row=$db->findAll($sql);
-            if (count($v_allsign_row)>$page) {
-              $page+=10;
-              echo "<a href='laboratoryinfo.php?id=".$_GET['id']."page=".$page."'><button class='btn btn-white btn-block'>Show More</button></a>";
-            }
-            ?>
           </div>
           <div class="tab-pane" id="followers">
             
             <div class="follower-list">
               
               <?php
+                //人员信息
                 $sql="select * from v_stu_laboratory where laboratoryid=".$v_laboratory_row[0]['id'];
                 $v_stu_laboratory_row=$db->findAll($sql);
 
@@ -193,16 +201,17 @@
                   echo "</div></div>";
                 }
               ?>
-              
-
             </div><!--follower-list -->
 
-            <div class="tab-pane" id="now">
+          </div>
+
+          <div class="tab-pane" id="now">
             
-            <div class="follower-list">
+            <div class="now-list">
               
               <?php
-                $sql="select * from v_stu_laboratory where laboratoryid=".$v_laboratory_row[0]['id'];
+                //人员信息
+                $sql="select * from v_stu_laboratory where laboratoryid=".$v_laboratory_row[0]['id']."  order by time desc";
                 $v_stu_laboratory_row=$db->findAll($sql);
 
                 if (count($v_stu_laboratory_row)==0) {
@@ -224,10 +233,8 @@
                   echo "</div></div>";
                 }
               ?>
-              
-
             </div><!--follower-list -->
-            
+
           </div>
           
           

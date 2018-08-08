@@ -26,7 +26,7 @@
             }
             else
             {
-              header('location:index.php');
+              header('location:login.php');
             }
         ?>
 <div class="leftpanel">
