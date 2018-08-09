@@ -153,7 +153,7 @@
                 if($len!=0){
                   echo "<li><a href='laboratoryinfo.php?id=".$_GET['id']."'>首页</a></li>";
                   if($page!=0){
-                  echo "<li><a href='laboratoryinfo.php?id=".($_GET['id'])."page=".($page-1)."'><i class='fa fa-angle-left'></i></a></li>";
+                  echo "<li><a href='laboratoryinfo.php?id=".($_GET['id'])."&page=".($page-1)."'><i class='fa fa-angle-left'></i></a></li>";
                   } else {
                     echo "<li class='disabled'><a><i class='fa fa-angle-left'></i></a></li>";
                   }
@@ -173,11 +173,11 @@
                     echo "</a></li>";
                   }
                   if($page!=ceil($len/10)){
-                   echo "<li><a href='laboratoryinfo.php?id=".($_GET['id'])."page=".($page+1)."'><i class='fa fa-angle-right'></i></a></li>";
+                   echo "<li><a href='laboratoryinfo.php?id=".($_GET['id'])."&page=".($page+1)."'><i class='fa fa-angle-right'></i></a></li>";
                   } else {
                     echo "<li class='disabled'><a><i class='fa fa-angle-right'></i></a></li>";
                   }
-                  echo "<li><a href='laboratoryinfo.php?id=".$_GET['id']."page=".ceil($len/10)."'>尾页</a></li>";
+                  echo "<li><a href='laboratoryinfo.php?id=".$_GET['id']."&page=".ceil($len/10)."'>尾页</a></li>";
                 }
                ?>
               </ul>
