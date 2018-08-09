@@ -211,34 +211,38 @@
               
               <?php
                 //人员信息
-                $sql="select * from v_stu_laboratory where laboratoryid=".$v_laboratory_row[0]['id']."  order by time desc";
-                $v_stu_laboratory_row=$db->findAll($sql);
+                $sql="select * from v_signtable where laboratoryid=".$_GET['id']." and to_days(time) = to_days(now())  order by time desc";
+                //echo $sql;
+                $v_sign_row=$db->findAll($sql);
 
                 if (count($v_stu_laboratory_row)==0) {
                   echo "暂无成员";
                 }
+                $stu_array = array();
                 for($i=0;$i<count($v_stu_laboratory_row);$i++)
                 {
-                  echo "<div class='media'>";
-                  echo "<a class='pull-left' href='#'>";
-                  echo "<img class='media-object' src='holder.js/100x125.html' alt='' /></a>";
-                  echo "<div class='media-body'>";
-                  echo "<h3 class='follower-name'>".$v_stu_laboratory_row[$i]['stuname']."</h3>";
-                  echo "<div class='profile-location'><i class='fa fa-map-marker'></i> ".$v_stu_laboratory_row[$i]['class']."</div>";
-                  echo "<div class='profile-position'><i class='fa fa-briefcase'></i> ".$v_stu_laboratory_row[$i]['proname']."</div>";
-                  echo "<div class='profile-location'><i class='fa  fa-clock-o'></i> ".$v_stu_laboratory_row[$i]['time']."</div>";
-                  echo "<div class='mb20'></div>";
-                  echo "<button class='btn btn-sm btn-success mr5'><i class='fa fa-user'></i>详细资料</button>";
-                  echo "<button class='btn btn-sm btn-white'><i class='fa fa-sign-out'></i>移出</button>";
-                  echo "</div></div>";
+                  if(!isset($stu_array[$v_stu_laboratory_row[$i]['stuname']])){
+                    $stu_array[$v_sign_row[$i]['stuname']]=1;
+                    if($v_sign_row[$i]['static']==1){
+                      echo "<div class='media'>";
+                      echo "<a class='pull-left' href='#'>";
+                      echo "<img class='media-object' src='holder.js/100x125.html' alt='' /></a>";
+                      echo "<div class='media-body'>";
+                      echo "<h3 class='follower-name'>".$v_sign_row[$i]['stuname']."</h3>";
+                      echo "<div class='profile-location'><i class='fa fa-map-marker'></i> ".$v_sign_row[$i]['class']."</div>";
+                      echo "<div class='profile-position'><i class='fa fa-briefcase'></i> ".$v_sign_row[$i]['proname']."</div>";
+                      echo "<div class='profile-location'><i class='fa  fa-clock-o'></i> ".$v_sign_row[$i]['time']."进入</div>";
+                      echo "<div class='mb20'></div>";
+                      echo "<button class='btn btn-sm btn-success mr5'><i class='fa fa-user'></i>详细资料</button>";
+                      echo "<button class='btn btn-sm btn-white'><i class='fa fa-sign-out'></i>移出</button>";
+                      echo "</div></div>";
+                    }
+                  }
                 }
               ?>
             </div><!--follower-list -->
 
           </div>
-          
-          
-          
         </div><!-- col-sm-9 -->
       </div><!-- row -->
       
