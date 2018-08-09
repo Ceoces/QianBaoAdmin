@@ -149,25 +149,37 @@
                ?>
             <center>
             <ul class="pagination">
-              <li><a href="laboratoryinfo.php?id=<?php echo $_GET['id']; ?>">首页</a></li>
-              <?php 
-              $begin=$page<=(ceil($len/10)-5)?$page:(ceil($len/10)-5);
-              if($begin<0)$begin=0;
-              $end=($begin+5)>$len?$len:($begin+5);
-              if(ceil($len/10)<5){
-                $end=ceil($len/10);
-              }
-              for($i=$begin;$i<$end;$i++)
-              {
-                echo "<li class='";
-                if($i>$len/10) echo"disable"; if($page==$i) echo " active";
-                echo "'>";
-                echo "<a href='laboratoryinfo.php?id=".$_GET['id']."&page=".$i."'>";
-                echo $i+1;
-                echo "</a></li>";
-              }
+              <?php
+                if($len!=0){
+                  echo "<li><a href='laboratoryinfo.php?id=".$_GET['id']."'>首页</a></li>";
+                  if($page!=0){
+                  echo "<li><a href='laboratoryinfo.php?id=".($_GET['id'])."page=".($page-1)."'><i class='fa fa-angle-left'></i></a></li>";
+                  } else {
+                    echo "<li class='disabled'><a><i class='fa fa-angle-left'></i></a></li>";
+                  }
+                  $begin=$page<=(ceil($len/10)-5)?$page:(ceil($len/10)-5);
+                  if($begin<0)$begin=0;
+                  $end=($begin+5)>$len?$len:($begin+5);
+                  if(ceil($len/10)<5){
+                    $end=ceil($len/10);
+                  }
+                  for($i=$begin;$i<$end;$i++)
+                  {
+                    echo "<li class='";
+                    if($i>$len/10) echo"disable"; if($page==$i) echo " active";
+                    echo "'>";
+                    echo "<a href='laboratoryinfo.php?id=".$_GET['id']."&page=".$i."'>";
+                    echo $i+1;
+                    echo "</a></li>";
+                  }
+                  if($page!=ceil($len/10)){
+                   echo "<li><a href='laboratoryinfo.php?id=".($_GET['id'])."page=".($page+1)."'><i class='fa fa-angle-right'></i></a></li>";
+                  } else {
+                    echo "<li class='disabled'><a><i class='fa fa-angle-right'></i></a></li>";
+                  }
+                  echo "<li><a href='laboratoryinfo.php?id=".$_GET['id']."page=".ceil($len/10)."'>尾页</a></li>";
+                }
                ?>
-               <li><a href="laboratoryinfo.php?id=<?php echo ceil($len/10); ?>">尾页</a></li>
               </ul>
             </center>
             
