@@ -172,12 +172,12 @@
                     echo $i+1;
                     echo "</a></li>";
                   }
-                  if($page!=ceil($len/10)){
+                  if($page<(ceil($len/10)-1)){  
                    echo "<li><a href='laboratoryinfo.php?id=".($_GET['id'])."&page=".($page+1)."'><i class='fa fa-angle-right'></i></a></li>";
                   } else {
                     echo "<li class='disabled'><a><i class='fa fa-angle-right'></i></a></li>";
                   }
-                  echo "<li><a href='laboratoryinfo.php?id=".$_GET['id']."&page=".ceil($len/10)."'>尾页</a></li>";
+                  echo "<li><a href='laboratoryinfo.php?id=".$_GET['id']."&page=".(ceil($len/10)-1)."'>尾页</a></li>";
                 }
                ?>
               </ul>
