@@ -80,7 +80,7 @@
         <span class="label">位置：</span>
         <ol class="breadcrumb">
           <li><a href="index.html">主页</a></li>
-          <li><a href="general-forms.html">教师信息管理</a></li>
+          <li><a href="teachertable.php">教师信息管理</a></li>
           <li class="active">添加教师信息</li>
         </ol>
       </div>
@@ -253,7 +253,6 @@ jQuery(document).ready(function(){
   jQuery('#timepicker2').timepicker({showMeridian: false});
   jQuery('#timepicker3').timepicker({minuteStep: 15});
 
-  
 });
 </script>
 

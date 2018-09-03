@@ -3,10 +3,12 @@
   header("Content-Type: text/html; charset=utf-8");
   include_once('mysql.class.php');
   if (isset($_GET['id'])) {
-    $sql="select * from v_laboratory where id=".$_GET['id'];
-  }  
+    $sql="select * from v_student where id=".$_GET['id'];
+  } else {
+    header("location: stutable.php");
+  }
   $v_laboratory_row=$db->findAll($sql);
-  $sql2="select * from v_signtable where laboratoryid=".$_GET['id'];
+  $sql2="select * from v_signtable where stuid=".$_GET['id'];
   $row=$db->findAll($sql2);
   $len=count($row);
 ?>
@@ -47,13 +49,13 @@
     <?php require_once('headerright.php'); ?>
 
     <div class="pageheader">
-      <h2><i class="fa fa-home"></i> 实验室信息 </h2>
+      <h2><i class="fa fa-home"></i> 学生信息 </h2>
       <div class="breadcrumb-wrapper">
         <span class="label">位置：</span>
         <ol class="breadcrumb">
           <li><a href="index.php">主页</a></li>
-          <li><a href="laboratorytable.php">实验室管理</a></li>
-          <li class="active">实验室信息</li>
+          <li><a href="laboratorytable.php">学生管理</a></li>
+          <li class="active">学生个人信息</li>
         </ol>
       </div>
     </div>
@@ -63,6 +65,7 @@
       <div class="row">
 
         <div class="col-sm-3"> 
+          <img src="images/photos/profile-1.png" class="thumbnail img-responsive" alt="" />
           <h2 class="profile-name"><?php echo $v_laboratory_row[0]['laboratoryname']; ?></h2>
             <div class="profile-location"><i class="fa fa-user"></i>
               <?php 
@@ -112,56 +115,15 @@
           
           <!-- Nav tabs -->
         <ul class="nav nav-tabs nav-justified nav-profile">
-          <li class="active"><a href="#now" data-toggle="tab">当前人员</a></li>
-          <li><a href="#sign" data-toggle="tab">签到情况</a></li>
-          <li><a href="#data" data-toggle="tab">签报统计</a></li>
-          <li><a href="#members" data-toggle="tab">成员</a></li>
-
+          <li><a href="#now" data-toggle="tab">个人信息</a></li>
+          <li class="active"><a href="#activities" data-toggle="tab">签到记录</a></li>
+          <li><a href="#followers" data-toggle="tab">参加项目</a></li>
+          <li><a href="#followers" data-toggle="tab">参加实验室</a></li>
         </ul>
 
         <!-- Tab panes -->
         <div class="tab-content">
-          <div class="tab-pane active" id="now">
-            
-            <div class="followers-list">
-              
-              <?php
-                //人员信息
-                $sql="select * from v_signtable where laboratoryid=".$_GET['id']." and to_days(time) = to_days(now())  order by time desc";
-                //echo $sql;
-                $v_sign_row=$db->findAll($sql);
-                $sql="select * from v_stu_laboratory where laboratoryid=".$v_laboratory_row[0]['id'];
-                $v_stu_laboratory_row=$db->findAll($sql);
-
-                if (count($v_sign_row)==0) {
-                  echo "暂无成员";
-                }
-                $stu_array = array();
-                for($i=0;$i<count($v_sign_row);$i++)
-                {
-                  if(!isset($stu_array[$v_stu_laboratory_row[$i]['stuname']])){
-                    $stu_array[$v_sign_row[$i]['stuname']]=1;
-                    if($v_sign_row[$i]['static']==1){
-                      echo "<div class='media'>";
-                      echo "<a class='pull-left' href='#'>";
-                      echo "<img class='media-object' src='holder.js/100x125.html' alt='' /></a>";
-                      echo "<div class='media-body'>";
-                      echo "<h3 class='follower-name'>".$v_sign_row[$i]['stuname']."</h3>";
-                      echo "<div class='profile-location'><i class='fa fa-map-marker'></i> ".$v_sign_row[$i]['class']."</div>";
-                      echo "<div class='profile-position'><i class='fa fa-briefcase'></i> ".$v_sign_row[$i]['proname']."</div>";
-                      echo "<div class='profile-location'><i class='fa  fa-clock-o'></i> ".$v_sign_row[$i]['time']."进入</div>";
-                      echo "<div class='mb20'></div>";
-                      echo "<button class='btn btn-sm btn-success mr5'><i class='fa fa-user'></i>详细资料</button>";
-                      echo "<button class='btn btn-sm btn-white'><i class='fa fa-sign-out'></i>移出</button>";
-                      echo "</div></div>";
-                    }
-                  }
-                }
-              ?>
-            </div><!--follower-list -->
-
-          </div>
-          <div class="tab-pane" id="sign">
+          <div class="tab-pane active" id="activities">
             <div class="activity-list">
               <?php 
               //签到情况
@@ -170,7 +132,6 @@
               $sql="select * from v_signtable where laboratoryid=".$_GET['id']." order by time    desc limit ".$begin.",".($begin+10);
               
               $v_sign_row=$db->findAll($sql);
-
               if (count($v_sign_row)==0) {
                 echo "暂无";
               }
@@ -230,18 +191,18 @@
             
             </div><!-- activity-list -->
           </div>
-          <div class="tab-pane" id="members">
+          <div class="tab-pane" id="followers">
             
             <div class="follower-list">
               
               <?php
                 //人员信息
-                
+                $sql="select * from v_stu_laboratory where laboratoryid=".$v_laboratory_row[0]['id'];
+                $v_stu_laboratory_row=$db->findAll($sql);
 
                 if (count($v_stu_laboratory_row)==0) {
                   echo "暂无成员";
                 }
-
                 for($i=0;$i<count($v_stu_laboratory_row);$i++)
                 {
                   echo "<div class='media'>";
@@ -261,91 +222,45 @@
             </div><!--follower-list -->
 
           </div>
-          <div class="tab-pane" id="data">
-            <div class="row"">
-              <div class="col-md-6"><!-- style="background: #e4e7ea-->
-                <p></p>
-                <p>今日实验室使用人数：30</p>
-                <p>今日实验室利用率（时间/人数）：1h</p>
-                <p>实验室总人数：30人</p>
-              </div>
-              <div class="col-md-6">
-                <h5 class="subtitle md5">本周学习时间排行</h5>
-                <div class="table-responsive">
-                  <table class="table mb30">
-                    <!-- <theead></theead> -->
-                    <tbody>
-                      <tr>
-                        <td>1</td>
-                        <td>xxx</td>
-                        <td>24h</td>
-                      </tr>
-                      <tr>
-                        <td>2</td>
-                        <td>yyy</td>
-                        <td>20h</td>
-                      </tr>
-                      <tr>
-                        <td>3</td>
-                        <td>zzz</td>
-                        <td>19h</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
 
-                <h5 class="subtitle md5">本月周学习时间排行</h5>
-                <div class="table-responsive">
-                  <table class="table mb30">
-                    <!-- <theead></theead> -->
-                    <tbody>
-                      <tr>
-                        <td>1</td>
-                        <td>xxx</td>
-                        <td>24h</td>
-                      </tr>
-                      <tr>
-                        <td>2</td>
-                        <td>yyy</td>
-                        <td>20h</td>
-                      </tr>
-                      <tr>
-                        <td>3</td>
-                        <td>zzz</td>
-                        <td>19h</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
+          <div class="tab-pane" id="now">
+            
+            <div class="now-list">
+              
+              <?php
+                //人员信息
+                $sql="select * from v_signtable where laboratoryid=".$_GET['id']." and to_days(time) = to_days(now())  order by time desc";
+                //echo $sql;
+                $v_sign_row=$db->findAll($sql);
 
-                <h5 class="subtitle md5">本季度周学习时间排行</h5>
-                <div class="table-responsive">
-                  <table class="table mb30">
-                    <!-- <theead></theead> -->
-                    <tbody>
-                      <tr>
-                        <td>1</td>
-                        <td>xxx</td>
-                        <td>24h</td>
-                      </tr>
-                      <tr>
-                        <td>2</td>
-                        <td>yyy</td>
-                        <td>20h</td>
-                      </tr>
-                      <tr>
-                        <td>3</td>
-                        <td>zzz</td>
-                        <td>19h</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
+                if (count($v_stu_laboratory_row)==0) {
+                  echo "暂无成员";
+                }
+                $stu_array = array();
+                for($i=0;$i<count($v_stu_laboratory_row);$i++)
+                {
+                  if(!isset($stu_array[$v_stu_laboratory_row[$i]['stuname']])){
+                    $stu_array[$v_sign_row[$i]['stuname']]=1;
+                    if($v_sign_row[$i]['static']==1){
+                      echo "<div class='media'>";
+                      echo "<a class='pull-left' href='#'>";
+                      echo "<img class='media-object' src='holder.js/100x125.html' alt='' /></a>";
+                      echo "<div class='media-body'>";
+                      echo "<h3 class='follower-name'>".$v_sign_row[$i]['stuname']."</h3>";
+                      echo "<div class='profile-location'><i class='fa fa-map-marker'></i> ".$v_sign_row[$i]['class']."</div>";
+                      echo "<div class='profile-position'><i class='fa fa-briefcase'></i> ".$v_sign_row[$i]['proname']."</div>";
+                      echo "<div class='profile-location'><i class='fa  fa-clock-o'></i> ".$v_sign_row[$i]['time']."进入</div>";
+                      echo "<div class='mb20'></div>";
+                      echo "<button class='btn btn-sm btn-success mr5'><i class='fa fa-user'></i>详细资料</button>";
+                      echo "<button class='btn btn-sm btn-white'><i class='fa fa-sign-out'></i>移出</button>";
+                      echo "</div></div>";
+                    }
+                  }
+                }
+              ?>
+            </div><!--follower-list -->
+
           </div>
-
-          
         </div><!-- col-sm-9 -->
       </div><!-- row -->
       
@@ -370,11 +285,6 @@
 <script src="js/holder.js"></script>
 
 <script src="js/custom.js"></script>
-
-<script src="js/jquery.datatables.min.js"></script>
-<script src="js/chosen.jquery.min.js"></script>
-
-<script src="js/custom.js"></script>
 <script>
   jQuery(document).ready(function(){
     
@@ -386,43 +296,6 @@
         jQuery(this).attr('rel', jQuery(this).data('rel'));
     });
     
-  });
-</script>
-<script>
-  jQuery(document).ready(function() {
-    
-    jQuery('#table1').dataTable();
-    
-    jQuery('#table2').dataTable({
-      "sPaginationType": "full_numbers"
-    });
-    
-    // Chosen Select
-    jQuery("select").chosen({
-      'min-width': '100px',
-      'white-space': 'nowrap',
-      disable_search_threshold: 10
-    });
-    
-    // Delete row in a table
-    jQuery('.delete-row').click(function(){
-      var c = confirm("Continue delete?");
-      if(c)
-        jQuery(this).closest('tr').fadeOut(function(){
-          jQuery(this).remove();
-        });
-        
-        return false;
-    });
-    
-    // Show aciton upon row hover
-    jQuery('.table-hidaction tbody tr').hover(function(){
-      jQuery(this).find('.table-action-hide a').animate({opacity: 1});
-    },function(){
-      jQuery(this).find('.table-action-hide a').animate({opacity: 0});
-    });
-  
-  
   });
 </script>
 

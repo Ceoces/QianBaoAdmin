@@ -77,17 +77,18 @@
                   </div>
                   <div class="col-xs-8">
                     <small class="stat-label">今日签报人数</small>
-                    <h1>90</h1>
+                    <h1><?php 
+                    $sql="select * from v_signtable where static=1 and to_days(now())=to_days(time)";
+                    $row=$db->findAll($sql);
+                    echo count($row);
+                     ?></h1>
                   </div>
                 </div><!-- row -->
-                
-
-
               </div><!-- stat -->
-              
             </div><!-- panel-heading -->
           </div><!-- panel -->
         </div><!-- col-sm-6 -->
+
         <div class="col-sm-6 col-md-3">
           <div class="panel panel-primary panel-stat">
             <div class="panel-heading">
@@ -99,16 +100,20 @@
                   </div>
                   <div class="col-xs-8">
                     <small class="stat-label">项目总数</small>
-                    <h1>3</h1>
+                    <h1><?php 
+                    $sql="select * from v_project";
+                    $row=$db->findAll($sql);
+                    echo count($row);
+                     ?></h1>
                   </div>
                 </div><!-- row -->
-                
               </div><!-- stat -->
-              
             </div><!-- panel-heading -->
           </div><!-- panel -->
-        </div>
-      </div>
+        </div><!-- col-sm-6 -->
+
+      </div><!-- row -->
+
       <div class="panel panel-default">
         <div class="panel-heading">
           <div class="panel-btns">
