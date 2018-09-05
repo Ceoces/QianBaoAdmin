@@ -14,7 +14,7 @@
           "name"=>$_POST['name'],
           "class"=>$_POST['class'],
           "teacherid"=>$_POST['teacher'],
-          "projectid"=>$_POST['project'],
+          "proid"=>$_POST['project'],
           "id"=>$_POST['id'],
           "password"=>sha1($_POST['id']),
           "addtime"=>$_POST['addtime'],
