@@ -7,7 +7,7 @@ if ($db->connect($dbhost, $dbuser, $dbpassword, $dbname)) {
   die;
 }
     //修改学生
-if (isset($_POST['name']) && isset($_POST['class']) && isset($_POST['teacher']) && isset($_POST['id']) && isset($_POST['addtime']) && isset($_POST['leavetime']) && isset($_POST['phone'])) {
+if (isset($_POST['name']) && isset($_POST['class']) && isset($_POST['teacher']) && isset($_POST['id'])  && isset($_POST['phone'])) {
   $data = array(
     "name" => $_POST['name'],
     "class" => $_POST['class'],
@@ -16,8 +16,6 @@ if (isset($_POST['name']) && isset($_POST['class']) && isset($_POST['teacher']) 
     "id" => $_POST['id'],
     "phone" => $_POST['phone'],
     "password" => sha1($_POST['id']),
-    "addtime" => $_POST['addtime'],
-    "leavetime" => $_POST['leavetime'],
     "laboratoryid" => $_POST['laboratory']
   );
 
@@ -47,7 +45,7 @@ if (isset($_POST['name']) && isset($_POST['class']) && isset($_POST['teacher']) 
   header("location:stutable.php");
 } else {
   $id = $_GET["id"];
-  $sel = "select id,name,class,phone,teacherid,proid,addtime,leavetime,laboratoryid from t_student where id = $id ";
+  $sel = "select id,name,class,phone,teacherid,proid,laboratoryid from t_student where id = $id ";
   $it = $db->find($sel);
 }
 ?>
@@ -209,18 +207,6 @@ if (isset($_POST['name']) && isset($_POST['class']) && isset($_POST['teacher']) 
               </div>
             </div>
 
-            <div class="form-group">
-              <label class="col-sm-3 control-label">进入时间</label>
-              <div class="col-sm-6">
-                <input type="date" class="form-control" name="addtime" value ="<?php  date('Y-m-d',$it['addtime']) ?>"/>
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="col-sm-3 control-label">离开时间</label>
-              <div class="col-sm-6">
-                <input type="date" class="form-control" name="leavetime" value ="<?php  date('Y-m-d',$it['leavetime']) ?>"/>
-              </div>
-            </div>
             <div class="form-group">
             <div class="row">
               <div class="col-sm-6 col-sm-offset-4">
