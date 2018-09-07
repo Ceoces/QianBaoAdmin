@@ -72,9 +72,7 @@
                     <th>班级</th>
                     <th>教师</th>
                     <th>实验室</th>
-                    <th>加入时间</th>
-                    <th>离开时间</th>
-                    <th></th>
+                    <th>创建时间</th>
                  </tr>
               </thead>
               <tbody>
@@ -99,8 +97,7 @@
                         echo "<td>".$row[$i]['teachername']."</td>";
                         echo "<td><a href='laboratoryinfo.php?id=".$row[$i]['id']."'>".$row[$i]['laboratoryname']."</a></td>";
                         echo "<td>".$row[$i]['addtime']."</td>";
-                        echo "<td>".$row[$i]['leavetime']."</td>";
-                        echo "<td><button class='btn btn-warning btn-sm'>修改</button>&nbsp;&nbsp;&nbsp;&nbsp;<a href='delete.php?obj=student&id=".$row[$i]['id']."'><button class='btn btn-danger btn-sm'>删除</button></a></td>";
+                        echo "<td><a href='changestu.php?id=".$row[$i]['id']."'><button class='btn btn-warning btn-sm'>修改</button></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='delete.php?obj=student&id=".$row[$i]['id']."'><button class='btn btn-danger btn-sm'>删除</button></a></td>";
                         echo "</tr>";
                       }
                  ?>
