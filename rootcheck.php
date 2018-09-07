@@ -1,5 +1,5 @@
 <?php
-	if(isset($_SESSION['id']))
+	if(isset($_SESSION['id'])&&!empty($_SESSION['id']))
 	  {
 	    require_once('mysql.class.php');
 	    $db=new Mysql();
@@ -12,7 +12,6 @@
 	      die;
 	    }
 	    $row=$db->findAll($sql);
-
 	    if($row[0]['static']!="1")
 	    {
 	      header('location:index.php');

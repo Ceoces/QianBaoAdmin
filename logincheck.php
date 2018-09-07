@@ -7,7 +7,7 @@
 	   echo "数据库连接错误";
 	   die;
 	}
-	if(isset($_SESSION['id'])&&isset($_SESSION['pwd']))
+	if(isset($_SESSION['id'])&&isset($_SESSION['pwd'])&&!empty($_SESSION['id']))
 	  {
 	  	$sql="select password from t_teacher where id='".$_SESSION['id']."'";
 	    $row=$db->findAll($sql);
