@@ -21,7 +21,7 @@
         );
         if (isset($_POST['root'])&&$_POST['root']=='1') {
           $data['root']=1;
-        }else{
+        } else {
           $data['root']=0;
         }
         if($db->save("t_teacher",$data))
