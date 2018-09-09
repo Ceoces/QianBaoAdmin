@@ -133,6 +133,12 @@
 
 <script src="js/custom.js"></script>
 <script>
+  
+  function IsNot_root()
+{
+    alert("仅超级管理员可执行此操作！")
+}
+  
   jQuery(document).ready(function() {
     
     jQuery('#table1').dataTable();
