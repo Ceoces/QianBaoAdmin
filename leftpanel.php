@@ -5,7 +5,8 @@
               $db=new Mysql();
               
               $sql="select * from t_teacher where id='".$_SESSION['id']."'";
-
+        
+                
               if($db->connect($dbhost,$dbuser,$dbpassword,$dbname))
               {
                 echo "数据库连接错误";
@@ -50,11 +51,16 @@
           </ul>
         </li>
         <?php
+         echo "<li class='nav-parent'><a href='#'><i class='fa fa-edit'></i> <span>教师管理</span></a><ul class='children'>";
+         echo "<li><a href='teachertable.php'><i class='fa fa-caret-right'></i> 查看教师信息</a></li>";
+         //echo "<li><a href='addteacher.php'><i class='fa fa-caret-right'></i> 添加教师</a></li></ul></li>";
               if(is_root)
               {
-                echo "<li class='nav-parent'><a href='#'><i class='fa fa-edit'></i> <span>教师管理</span></a><ul class='children'>";
-                echo "<li><a href='teachertable.php'><i class='fa fa-caret-right'></i> 查看教师信息</a></li>";
                 echo "<li><a href='addteacher.php'><i class='fa fa-caret-right'></i> 添加教师</a></li></ul></li>";
+              }
+              else
+              {
+                  echo "</ul></li>";
               }
         ?>
          <li class="nav-parent"><a href="#"><i class="fa fa-edit"></i> <span>项目管理</span></a>

@@ -94,7 +94,14 @@
                         }
                         echo "<td>".$row[$i]['phone']."</td>";
                         echo "<td>".$row[$i]['email']."</td>";
-                        echo "<td><a href='changeteacher.php?id=".$row[$i]['id']."'><button class='btn btn-warning btn-sm'>修改</button></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='delete.php?obj=teacher&id=".$row[$i]['id']."'><button class='btn btn-danger btn-sm'>删除</button></a></td>";
+                        if (is_root)
+                        {
+                             echo "<td><a href='changeteacher.php?id=".$row[$i]['id']."'><button class='btn btn-warning btn-sm'>修改</button></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='delete.php?obj=teacher&id=".$row[$i]['id']."'><button class='btn btn-danger btn-sm'>删除</button></a></td>";
+                        }
+                       else
+                        {
+                            echo "<td><button class='btn btn-warning btn-sm' onclick=\"IsNot_root()\")\">修改</button>&nbsp;&nbsp;&nbsp;&nbsp;"."<button class='btn btn-danger btn-sm'  onclick=\"IsNot_root()\")\">删除</button></a></td>";
+                        }
                         echo "</tr>";
                       }
                  ?>
@@ -126,6 +133,12 @@
 
 <script src="js/custom.js"></script>
 <script>
+  
+  function IsNot_root()
+{
+    alert("仅超级管理员可执行此操作！")
+}
+  
   jQuery(document).ready(function() {
     
     jQuery('#table1').dataTable();
