@@ -101,9 +101,11 @@ class Mysql {
 			}
 		}
 		if (! empty ( $sets )) {
-			$sql = 'UPDATE ' . $table . ' SET ' . implode ( ', ', $sets ) . ' WHERE ' . $where;
+			$sql = 'UPDATE ' . $table . ' SET ' . implode ( ', ', $sets ) . ' WHERE id = ' . $where;
+			//echo $sql;
 		}
 		if ($sql) {
+			//echo $sql."<br>";
 			return $this->query ( $sql );
 		} else {
 			return false;
@@ -121,7 +123,7 @@ class Mysql {
 		if(empty($where)){
 			$sql = 'DELETE FROM '.$table;
 		}else{
-			$sql = 'DELETE FROM '.$table.' WHERE '.$where;
+			$sql = 'DELETE FROM '.$table.' WHERE id = '.$where;
 		}
 		if($this->query ( $sql )){
 			return true;
