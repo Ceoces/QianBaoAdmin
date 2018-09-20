@@ -24,6 +24,7 @@
 
   <link href="css/style.default.css" rel="stylesheet">
   <link href="css/prettyPhoto.css" rel="stylesheet">
+  <link href="css/morris.css" rel="stylesheet">
 
   <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!--[if lt IE 9]>
@@ -262,14 +263,15 @@
 
           </div>
           <div class="tab-pane" id="data">
-            <div class="row"">
-              <div class="col-md-6"><!-- style="background: #e4e7ea-->
-                <p></p>
-                <p>今日实验室使用人数：30</p>
-                <p>今日实验室利用率（时间/人数）：1h</p>
-                <p>实验室总人数：30人</p>
+            <div class="row">
+              <div class="col-md-8"><!-- style="background: #e4e7ea-->
+                <div class="row">
+                <div id="area-chart" style="height:300px;width:510px;position: relative;margin:5px;">
+                </div>
               </div>
-              <div class="col-md-6">
+                
+              </div>
+              <div class="col-md-4">
                 <h5 class="subtitle md5">本周学习时间排行</h5>
                 <div class="table-responsive">
                   <table class="table mb30">
@@ -365,16 +367,23 @@
 <script src="js/toggles.min.js"></script>
 <script src="js/retina.min.js"></script>
 <script src="js/jquery.cookies.js"></script>
-
+<script src="js/jquery.datatables.min.js"></script>
+<script src="js/chosen.jquery.min.js"></script>
 <script src="js/jquery.prettyPhoto.js"></script>
 <script src="js/holder.js"></script>
 
+
+<script src="js/flot/flot.min.js"></script>
+<script src="js/flot/flot.resize.min.js"></script>
+<script src="js/flot/flot.symbol.min.js"></script>
+<script src="js/flot/flot.crosshair.min.js"></script>
+<script src="js/flot/flot.categories.min.js"></script>
+<script src="js/flot/flot.pie.min.js"></script>
+<script src="js/morris.min.js"></script>
+<script src="js/raphael-2.1.0.min.js"></script>
+
 <script src="js/custom.js"></script>
 
-<script src="js/jquery.datatables.min.js"></script>
-<script src="js/chosen.jquery.min.js"></script>
-
-<script src="js/custom.js"></script>
 <script>
   jQuery(document).ready(function(){
     
@@ -386,7 +395,37 @@
         jQuery(this).attr('rel', jQuery(this).data('rel'));
     });
     
+
+  /***** MORRIS CHARTS *****/
+   
+   
+   
+    new Morris.Area({
+        // ID of the element in which to draw the chart.
+        element: 'area-chart',
+        // Chart data records -- each entry in this array corresponds to a point on
+        // the chart.
+        data: [
+            { y: '2006', a: 2},
+            { y: '2007', a: 0},
+            { y: '2008', a: 5},
+            { y: '2009', a: 4},
+            { y: '2010', a: 7},
+            { y: '2011', a: 12},
+            { y: '2012', a: 5}
+        ],
+        xkey: 'y',
+        ykeys: ['a'],
+        labels: ['人数'],
+        lineColors: ['#1CAF9A'],
+        lineWidth: '1px',
+        fillOpacity: 0.8,
+        smooth: false,
+        hideHover: true
+    });
   });
+    
+
 </script>
 <script>
   jQuery(document).ready(function() {
