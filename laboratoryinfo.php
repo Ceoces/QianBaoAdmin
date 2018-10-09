@@ -1,6 +1,6 @@
 <?php
-  require_once('logincheck.php'); 
   header("Content-Type: text/html; charset=utf-8");
+  require_once('logincheck.php'); 
   include_once('mysql.class.php');
   if (isset($_GET['id'])) {
     $sql="select * from v_laboratory where id=".$_GET['id'];
@@ -9,8 +9,27 @@
   $sql2="select * from v_signtable where laboratoryid=".$_GET['id'];
   $row=$db->findAll($sql2);
   $len=count($row);
-?>
+  $testarr=array();
 
+  //数据统计
+  //$sql_week="select date_format(time,'%a') as time,stuname,stuid,static from v_signtable where time >= date_sub(now(),interval 7 day) and laboratoryid=".$_GET['id']." order by time desc";
+  $sql_month="select date_format(time,'%d') as time,stuname,stuid,static from V_signtable where time >= date_sub(now(),interval 1 month) and laboratoryid=".$_GET['id']." order by time desc";
+
+  $row_month=$db->findAll($sql_month);
+  $num_month=array();
+  for($i=0;$i<count($row_month);$i++)
+  {
+    //统计进入人数
+    if(isset($row_month[$i]['time'])&&$row_month[$i]['static']==1){
+      if(array_key_exists($row_month[$i]['time'],$num_month))
+        {
+          $num_month[$row_month[$i]['time']]++;
+        } else {
+          $num_month[$row_month[$i]['time']] = 1;
+        }
+      }
+    }
+ ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -251,7 +270,6 @@
                   echo "<div class='media-body'>";
                   echo "<h3 class='follower-name'>".$v_stu_laboratory_row[$i]['stuname']."</h3>";
                   echo "<div class='profile-location'><i class='fa fa-map-marker'></i> ".$v_stu_laboratory_row[$i]['class']."</div>";
-                  echo "<div class='profile-position'><i class='fa fa-briefcase'></i> ".$v_stu_laboratory_row[$i]['proname']."</div>";
                   echo "<div class='profile-location'><i class='fa  fa-clock-o'></i> ".$v_stu_laboratory_row[$i]['time']."</div>";
                   echo "<div class='mb20'></div>";
                   echo "<button class='btn btn-sm btn-success mr5'><i class='fa fa-user'></i>详细资料</button>";
@@ -264,14 +282,20 @@
           </div>
           <div class="tab-pane" id="data">
             <div class="row">
-              <div class="col-md-8"><!-- style="background: #e4e7ea-->
-                <div class="row">
-                <div id="area-chart" style="height:300px;width:510px;position: relative;margin:5px;">
-                </div>
+              <div class="col-md-8">
+                    <div id="week" style="height:300px;width:500px;position: relative;">
+                    </div>
+                    <div class="col-md-8 col-sm-offset-4">
+                      <h5>本周人流量折线图</h5> 
+                    </div>
+                    <div id="month" style="height:300px;width:500px;position: relative;">
+                    </div>
+                    <div class="col-md-8 col-sm-offset-4" style="margin-top: 50px;">
+                      <h5>本月人流量折线图</h5>
+                    </div>
               </div>
-                
-              </div>
-              <div class="col-md-4">
+
+              <div class="col-md-4" style="margin-top:55px;">
                 <h5 class="subtitle md5">本周学习时间排行</h5>
                 <div class="table-responsive">
                   <table class="table mb30">
@@ -297,30 +321,6 @@
                 </div>
 
                 <h5 class="subtitle md5">本月周学习时间排行</h5>
-                <div class="table-responsive">
-                  <table class="table mb30">
-                    <!-- <theead></theead> -->
-                    <tbody>
-                      <tr>
-                        <td>1</td>
-                        <td>xxx</td>
-                        <td>24h</td>
-                      </tr>
-                      <tr>
-                        <td>2</td>
-                        <td>yyy</td>
-                        <td>20h</td>
-                      </tr>
-                      <tr>
-                        <td>3</td>
-                        <td>zzz</td>
-                        <td>19h</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-
-                <h5 class="subtitle md5">本季度周学习时间排行</h5>
                 <div class="table-responsive">
                   <table class="table mb30">
                     <!-- <theead></theead> -->
@@ -384,6 +384,17 @@
 
 <script src="js/custom.js"></script>
 
+
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-gl/echarts-gl.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-stat/ecStat.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/dataTool.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/china.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/world.js"></script>
+       <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=ZUONbpqGBsYGXNIYHicvbAbM"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/bmap.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/simplex.js"></script>
+
 <script>
   jQuery(document).ready(function(){
     
@@ -395,37 +406,164 @@
         jQuery(this).attr('rel', jQuery(this).data('rel'));
     });
     
+</script>
+<script>
+ var dom = document.getElementById("week");
+var myChart = echarts.init(dom);
+var app = {};
+option = null;
+app.title = '本周人流量';
 
-  /***** MORRIS CHARTS *****/
-   
-   
-   
-    new Morris.Area({
-        // ID of the element in which to draw the chart.
-        element: 'area-chart',
-        // Chart data records -- each entry in this array corresponds to a point on
-        // the chart.
-        data: [
-            { y: '2006', a: 2},
-            { y: '2007', a: 0},
-            { y: '2008', a: 5},
-            { y: '2009', a: 4},
-            { y: '2010', a: 7},
-            { y: '2011', a: 12},
-            { y: '2012', a: 5}
-        ],
-        xkey: 'y',
-        ykeys: ['a'],
-        labels: ['人数'],
-        lineColors: ['#1CAF9A'],
-        lineWidth: '1px',
-        fillOpacity: 0.8,
-        smooth: false,
-        hideHover: true
-    });
-  });
+option = {
+    color: ['#3398DB'],
+    tooltip : {
+        trigger: 'axis',
+        axisPointer : {
+            type : 'shadow'
+        }
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    xAxis : [
+        {
+            type : 'category',
+            data : [<?php
+              $i=0;
+              foreach($num_month as $key => $value)
+              {
+                if($i==0){
+                  echo "'".$key."'";
+                } else {
+                  echo ", '".$key."'";
+                }
+                $i++;
+              }
+              echo "],";
+             ?>
+
+            axisTick: {
+                alignWithLabel: true
+            }
+        }
+    ],
+    yAxis : [
+        {
+            type : 'value'
+        }
+    ],
+    series : [
+        {
+            name:'当日人数',
+            type:'bar',
+            barWidth: '60%',
+            data:[<?php
+              $i=0;
+              foreach($num_month as $key => $value)
+              {
+                if($i==0){
+                  echo $value;
+                } else {
+                  echo $value;
+                }
+                $i++;
+              }
+             ?>]
+        }
+    ]
+};
+;
+if (option && typeof option === "object") {
+    myChart.setOption(option, true);
+}
+</script>
+<script>
+  jQuery(document).ready(function(){
     
+    jQuery("a[rel^='prettyPhoto']").prettyPhoto();
+    
+    //Replaces data-rel attribute to rel.
+    //We use data-rel because of w3c validation issue
+    jQuery('a[data-rel]').each(function() {
+        jQuery(this).attr('rel', jQuery(this).data('rel'));
+    });
+    
+</script>
+<script>
+ var dom = document.getElementById("month");
+var myChart = echarts.init(dom);
+var app = {};
+option = null;
+app.title = '本周人流量';
 
+option = {
+    color: ['#3398DB'],
+    tooltip : {
+        trigger: 'axis',
+        axisPointer : {
+            type : 'shadow'
+        }
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    xAxis : [
+        {
+            type : 'category',
+            data : [<?php
+              $i=0;
+              foreach($num_month as $key => $value)
+              {
+                if($i==0){
+                  echo "'".$key."'";
+                } else {
+                  echo ", '".$key."'";
+                }
+                $i++;
+              }
+              echo "],";
+             ?>
+
+            axisTick: {
+                alignWithLabel: true
+            }
+        }
+    ],
+    yAxis : [
+        {
+            type : 'value'
+        }
+    ],
+    series : [
+        {
+            name:'当日人数',
+            type:'bar',
+            barWidth: '60%',
+            data:[<?php
+              $i=0;
+              foreach($num_month as $key => $value)
+              {
+                if($i==0){
+                  echo $value;
+                } else {
+                  echo $value;
+                }
+                $i++;
+              }
+             ?>]
+        }
+    ]
+};
+;
+if (option && typeof option === "object") {
+    myChart.setOption(option, true);
+}
 </script>
 <script>
   jQuery(document).ready(function() {
