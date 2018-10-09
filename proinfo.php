@@ -60,11 +60,6 @@
       <div class="row">
 
         <div class="col-sm-3">
-          <img src="images/photos/profile-1.png" class="thumbnail img-responsive" alt="">
-
-        </div>
-        
-        <div class="col-sm-9">
           
           <div class="profile-header">
             <h2 class="profile-name"><?php echo $v_pro_row[0]['proname']; ?></h2>
@@ -96,8 +91,14 @@
             <div class="mb20"></div>
           <p class="mb30"><?php echo $v_pro_row[0]['info']; ?> </p>
 
+           <p><button class="btn btn-primary" style="margin-right: 20px;">添加成员</button>
+            <a href="changepro.php?id=<?php echo $_GET['id'] ?>"><button class="btn btn-primary">修改信息</button></a></p>
+
           </div><!-- profile-header -->
-          
+
+        </div>
+        
+        <div class="col-sm-9">
           <!-- Nav tabs -->
         <ul class="nav nav-tabs nav-justified nav-profile">
           <li class="active"><a href="#activities" data-toggle="tab">成员</a></li>
