@@ -125,7 +125,7 @@ class Mysql {
 		}
 		if($this->query ( $sql )){
 			return true;
-		}else{
+		} else {
 			return false;
 		}
 	}
