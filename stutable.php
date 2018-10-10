@@ -77,10 +77,10 @@
               </thead>
               <tbody>
                  <?php  
-                 $sql="select * from v_student";
+                 $sql="select * from v_student group by id";
                  if(is_root==0)
                    {
-                    $sql="select * from v_student where teacherid='".$_SESSION['id']."'";
+                    $sql="select * from v_student where teacherid='".$_SESSION['id']."' group by id";
                   }
                   if($db->connect($dbhost,$dbuser,$dbpassword,$dbname))
                  {
