@@ -26,7 +26,7 @@
   }
 
   for($i=$p;$i>=0;$i--){
-    $sql_week="select count(*) as num,date_format(time,'%a') as day from V_signtable where time >= date_sub(now(),interval 1 week) and static=1 and laboratoryid=1 and date_format(time,'%w')=".($i+1)." group by stuname,date_format(time,'%w') order by time asc";
+    $sql_week="select count(*) as num,date_format(time,'%a') as day from V_signtable where time >= date_sub(now(),interval 1 week) and static=1 and laboratoryid=".$_GET['id']." and date_format(time,'%w')=".($i+1)." group by stuname,date_format(time,'%w') order by time asc";
     $row_week=$db->findAll($sql_week);
     $date_week[$day_list[$i]]=0;
     if(isset($row_week[0]['num'])){
@@ -36,7 +36,7 @@
     }
   }
   for($i=6;$i>$p;$i--){
-    $sql_week="select count(*) as num,date_format(time,'%a') as day from V_signtable where time >= date_sub(now(),interval 1 week) and static=1 and laboratoryid=1 and date_format(time,'%w')=".($i+1)." group by stuname,date_format(time,'%w') order by time asc";
+    $sql_week="select count(*) as num,date_format(time,'%a') as day from V_signtable where time >= date_sub(now(),interval 1 week) and static=1 and laboratoryid=".$_GET['id']." and date_format(time,'%w')=".($i+1)." group by stuname,date_format(time,'%w') order by time asc";
     $row_week=$db->findAll($sql_week);
     $date_week[$day_list[$i]]=0;
     if(isset($row_week[0]['num'])){
@@ -329,6 +329,29 @@
               </div>
 
               <div class="col-md-4" style="margin-top:55px;">
+                <h5 class="subtitle md5">个人总排行</h5>
+                <div class="table-responsive">
+                  <table class="table mb30">
+                    <!-- <theead></theead> -->
+                    <tbody>
+                      <tr>
+                        <td>1</td>
+                        <td>xxx</td>
+                        <td>24h</td>
+                      </tr>
+                      <tr>
+                        <td>2</td>
+                        <td>yyy</td>
+                        <td>20h</td>
+                      </tr>
+                      <tr>
+                        <td>3</td>
+                        <td>zzz</td>
+                        <td>19h</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
                 <h5 class="subtitle md5">本周学习时间排行</h5>
                 <div class="table-responsive">
                   <table class="table mb30">
@@ -353,7 +376,7 @@
                   </table>
                 </div>
 
-                <h5 class="subtitle md5">本月周学习时间排行</h5>
+                <h5 class="subtitle md5">本月学习时间排行</h5>
                 <div class="table-responsive">
                   <table class="table mb30">
                     <!-- <theead></theead> -->
