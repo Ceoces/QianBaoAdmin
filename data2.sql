@@ -11,7 +11,7 @@
  Target Server Version : 50547
  File Encoding         : 65001
 
- Date: 10/10/2018 18:53:26
+ Date: 10/10/2018 20:48:59
 */
 
 SET NAMES utf8mb4;
@@ -228,27 +228,6 @@ INNER JOIN t_project ON t_project.teacherid = t_teacher.id
 INNER JOIN t_laboratory ON t_project.laboratoryid = t_laboratory.id ;
 
 -- ----------------------------
--- View structure for v_signtable
--- ----------------------------
-DROP VIEW IF EXISTS `v_signtable`;
-CREATE ALGORITHM = UNDEFINED DEFINER = `root`@`localhost` SQL SECURITY DEFINER VIEW `v_signtable` AS SELECT
-t_signtable.time,
-t_signtable.static,
-t_laboratory.`name` AS laboratoryname,
-t_signtable.seat,
-t_laboratory.id AS laboratoryid,
-v_student.stuname,
-v_student.teachername,
-v_student.phone,
-v_student.class,
-v_student.proname,
-v_student.id AS stuid
-FROM
-t_signtable
-INNER JOIN t_laboratory ON t_signtable.laboratoryid = t_laboratory.id
-INNER JOIN v_student ON v_student.id = t_signtable.stuid ;
-
--- ----------------------------
 -- View structure for v_student
 -- ----------------------------
 DROP VIEW IF EXISTS `v_student`;
@@ -271,6 +250,29 @@ LEFT JOIN t_stu_pro ON t_student.id = t_stu_pro.studentid
 LEFT JOIN t_project ON t_stu_pro.proid = t_project.id
 LEFT JOIN t_stu_laboratory ON t_student.id = t_stu_laboratory.studentid
 LEFT JOIN t_laboratory ON t_stu_laboratory.laboratoryid = t_laboratory.id ;
+
+-- ----------------------------
+-- View structure for v_signtable
+-- ----------------------------
+DROP VIEW IF EXISTS `v_signtable`;
+CREATE ALGORITHM = UNDEFINED DEFINER = `root`@`localhost` SQL SECURITY DEFINER VIEW `v_signtable` AS SELECT
+t_signtable.time,
+t_signtable.static,
+t_laboratory.`name` AS laboratoryname,
+t_signtable.seat,
+t_laboratory.id AS laboratoryid,
+v_student.stuname,
+v_student.teachername,
+v_student.phone,
+v_student.class,
+v_student.proname,
+v_student.id AS stuid
+FROM
+t_signtable
+INNER JOIN t_laboratory ON t_signtable.laboratoryid = t_laboratory.id
+INNER JOIN v_student ON v_student.id = t_signtable.stuid ;
+
+
 
 -- ----------------------------
 -- View structure for v_stu_laboratory
