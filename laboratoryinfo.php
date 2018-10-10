@@ -12,8 +12,41 @@
   $testarr=array();
 
   //数据统计
-  //$sql_week="select date_format(time,'%a') as time,stuname,stuid,static from v_signtable where time >= date_sub(now(),interval 7 day) and laboratoryid=".$_GET['id']." order by time desc";
-  $sql_month="select date_format(time,'%d') as time,stuname,stuid,static from V_signtable where time >= date_sub(now(),interval 1 month) and laboratoryid=".$_GET['id']." order by time desc";
+
+  //每周数据统计
+  $month_list=array("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec");
+  $day_list=array("Mon","Tue","Wed","Thu","Fri","Sat","Sun");
+  $data_week=array();
+  $today=substr(date("l"),0,3);
+
+  $p=0;
+  for($i=0;$i<count($day_list);$i++){
+    if($day_list[$i]==$today)
+      $p=$i;
+  }
+
+  for($i=$p;$i>=0;$i--){
+    $sql_week="select count(*) as num,date_format(time,'%a') as day from V_signtable where time >= date_sub(now(),interval 1 week) and static=1 and laboratoryid=1 and date_format(time,'%w')=".($i+1)." group by stuname,date_format(time,'%w') order by time asc";
+    $row_week=$db->findAll($sql_week);
+    $date_week[$day_list[$i]]=0;
+    if(isset($row_week[0]['num'])){
+      $date_week[$day_list[$i]]= $row_week[0]['num'];
+    } else {
+      $date_week[$day_list[$i]]=0;
+    }
+  }
+  for($i=6;$i>$p;$i--){
+    $sql_week="select count(*) as num,date_format(time,'%a') as day from V_signtable where time >= date_sub(now(),interval 1 week) and static=1 and laboratoryid=1 and date_format(time,'%w')=".($i+1)." group by stuname,date_format(time,'%w') order by time asc";
+    $row_week=$db->findAll($sql_week);
+    $date_week[$day_list[$i]]=0;
+    if(isset($row_week[0]['num'])){
+      $date_week[$day_list[$i]]= $row_week[0]['num'];
+    } else {
+      $date_week[$day_list[$i]]=0;
+    }
+  }
+
+  $sql_month="select date_format(time,'%d') as time,stuname,stuid,static from V_signtable where time >= date_sub(now(),interval 1 month) and static=1 and laboratoryid=".$_GET['id']." group by stuname,date_format(time,'%w') order by time asc";
 
   $row_month=$db->findAll($sql_month);
   $num_month=array();
@@ -408,7 +441,7 @@
     
 </script>
 <script>
- var dom = document.getElementById("week");
+var dom = document.getElementById("week");
 var myChart = echarts.init(dom);
 var app = {};
 option = null;
@@ -433,7 +466,7 @@ option = {
             type : 'category',
             data : [<?php
               $i=0;
-              foreach($num_month as $key => $value)
+              foreach(array_reverse($date_week) as $key => $value)
               {
                 if($i==0){
                   echo "'".$key."'";
@@ -462,12 +495,12 @@ option = {
             barWidth: '60%',
             data:[<?php
               $i=0;
-              foreach($num_month as $key => $value)
+              foreach(array_reverse ($date_week) as $key => $value)
               {
                 if($i==0){
                   echo $value;
                 } else {
-                  echo $value;
+                  echo ", ".$value;
                 }
                 $i++;
               }
@@ -552,7 +585,7 @@ option = {
                 if($i==0){
                   echo $value;
                 } else {
-                  echo $value;
+                  echo ",".$value;
                 }
                 $i++;
               }
