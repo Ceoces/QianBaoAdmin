@@ -1,11 +1,8 @@
-<?php require_once('logincheck.php'); ?>
-<?php   
+<?php 
+  require_once('logincheck.php');
   header("Content-Type: text/html; charset=utf-8");
-  
   include_once('mysql.class.php');
   $db=new Mysql();
-  
-  
 ?>
 
 <!DOCTYPE html>
@@ -78,7 +75,7 @@
                   <div class="col-xs-8">
                     <small class="stat-label">今日签报人数</small>
                     <h1><?php 
-                    $sql="select * from v_signtable where static=1 and to_days(now())=to_days(time)";
+                    $sql="select * from v_signtable where to_days(now())=to_days(intime) group by stuid";
                     $row=$db->findAll($sql);
                     echo count($row);
                      ?></h1>
