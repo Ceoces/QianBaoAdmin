@@ -70,7 +70,11 @@
                     <th>权限</th>
                     <th>电话</th>
                     <th>邮箱</th>
-                    <th></th>
+                    <?php 
+                      if(is_root){
+                        echo "<th></th>";
+                      }
+                     ?>
                  </tr>
               </thead>
               <tbody>
@@ -94,13 +98,8 @@
                         }
                         echo "<td>".$row[$i]['phone']."</td>";
                         echo "<td>".$row[$i]['email']."</td>";
-                        if (is_root)
-                        {
-                             echo "<td><a href='changeteacher.php?id=".$row[$i]['id']."'><button class='btn btn-warning btn-sm'>修改</button></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='delete.php?obj=teacher&id=".$row[$i]['id']."'><button class='btn btn-danger btn-sm'>删除</button></a></td>";
-                        }
-                       else
-                        {
-                            echo "<td><button class='btn btn-warning btn-sm' onclick=\"IsNot_root()\")\">修改</button>&nbsp;&nbsp;&nbsp;&nbsp;"."<button class='btn btn-danger btn-sm'  onclick=\"IsNot_root()\")\">删除</button></a></td>";
+                        if(is_root){
+                          echo "<td><a href='changeteacher.php?id=".$row[$i]['id']."'><button class='btn btn-warning btn-sm'>修改</button></a>&nbsp;&nbsp;&nbsp;&nbsp;<button class='btn btn-danger btn-sm btn-delete1' teacherid='".$row[$i]['id']."' data-toggle='modal' data-target='#myModal'>删除</button></td>";
                         }
                         echo "</tr>";
                       }
@@ -118,6 +117,25 @@
   
 </section>
 
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">删除</h4>
+      </div>
+      <div class="modal-body">
+        确定要删除么？
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <a id="delete"><button type="button" class="btn btn-primary">删除</button></a>
+      </div>
+    </div><!-- modal-content -->
+  </div><!-- modal-dialog -->
+</div><!-- modal -->
+
 
 <script src="js/jquery-1.10.2.min.js"></script>
 <script src="js/jquery-migrate-1.2.1.min.js"></script>
@@ -134,11 +152,21 @@
 <script src="js/custom.js"></script>
 <script>
   
-  function IsNot_root()
-{
-    alert("仅超级管理员可执行此操作！")
-}
+  function alert_NotSuRoot()
+  {
+      alert("仅超级管理员可执行此操作！")
+  }
   
+  var del=document.getElementsByClassName('btn-delete1');
+  for(var i=0;i<del.length;i++){
+      del[i].addEventListener('click',function(el){
+        var id=el.srcElement.getAttribute('teacherid');
+        var btn_delete=document.getElementById('delete');
+        btn_delete.setAttribute('href',"delete.php?obj=teacher&id="+id);
+        console.log("delete.php?obj=teacher&id="+id);
+    })
+  }
+
   jQuery(document).ready(function() {
     
     jQuery('#table1').dataTable();

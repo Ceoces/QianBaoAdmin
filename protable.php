@@ -102,7 +102,7 @@
                         echo "<td><a href='laboratoryinfo.php?id=".$row[$i]['laboratoryid']."'>".$row[$i]['laboratoryname']."</a></td>";
                         echo "<td>".$row[$i]['startTime']."</td>";
                         echo "<td>".$row[$i]['endTime']."</td>";
-                        echo "<td><a href='changepro.php?id=".$row[$i]['proid']."'><button class='btn btn-warning btn-sm'>修改</button></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='delete.php?obj=project&id=".$row[$i]['proid']."'><button class='btn btn-danger btn-sm' data-toggle='modal' data-target='#myModal'>删除</button></a></td>";
+                        echo "<td><a href='changepro.php?id=".$row[$i]['proid']."'><button class='btn btn-warning btn-sm'>修改</button></a>&nbsp;&nbsp;&nbsp;&nbsp;<button class='btn btn-danger btn-sm btn-delete1' proid='".$row[$i]['proid']."' data-toggle='modal' data-target='#myModal'>删除</button></td>";
                         echo "</tr>";
                       }
                  ?>
@@ -125,13 +125,14 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">删除</h4>
       </div>
       <div class="modal-body">
-        确定删除这条记录么？
+        确定要删除么？
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-        <a><button type="button" class="btn btn-primary">删除</button></a>
+        <a id="delete"><button type="button" class="btn btn-primary">删除</button></a>
       </div>
     </div><!-- modal-content -->
   </div><!-- modal-dialog -->
@@ -152,6 +153,17 @@
 
 <script src="js/custom.js"></script>
 <script>
+
+  var del=document.getElementsByClassName('btn-delete1');
+  for(var i=0;i<del.length;i++){
+      del[i].addEventListener('click',function(el){
+        var id=el.srcElement.getAttribute('proid');
+        var btn_delete=document.getElementById('delete');
+        btn_delete.setAttribute('href',"delete.php?obj=project&id="+id);
+        console.log("delete.php?obj=project&id="+id);
+    })
+  }
+
   jQuery(document).ready(function() {
     
     jQuery('#table1').dataTable();

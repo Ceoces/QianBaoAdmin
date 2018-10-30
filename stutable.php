@@ -97,7 +97,7 @@
                         echo "<td>".$row[$i]['teachername']."</td>";
                         echo "<td><a href='laboratoryinfo.php?id=".$row[$i]['id']."'>".$row[$i]['laboratoryname']."</a></td>";
                         echo "<td>".$row[$i]['addtime']."</td>";
-                        echo "<td><a href='changestu.php?id=".$row[$i]['id']."'><button class='btn btn-warning btn-sm'>修改</button></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='delete.php?obj=student&id=".$row[$i]['id']."'><button class='btn btn-danger btn-sm'>删除</button></a></td>";
+                        echo "<td><a href='changestu.php?id=".$row[$i]['id']."'><button class='btn btn-warning btn-sm'>修改</button></a>&nbsp;&nbsp;&nbsp;&nbsp;<button class='btn btn-danger btn-sm btn-delete1' stuid='".$row[$i]['id']."'  data-toggle='modal' data-target='#myModal'>删除</button></td>";
                         echo "</tr>";
                       }
                  ?>
@@ -120,14 +120,14 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+        <h4 class="modal-title" id="myModalLabel">删除</h4>
       </div>
       <div class="modal-body">
-        Content goes here...
+        确定要删除么？
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <a id="delete"><button type="button" class="btn btn-primary">删除</button></a>
       </div>
     </div><!-- modal-content -->
   </div><!-- modal-dialog -->
@@ -147,7 +147,22 @@
 <script src="js/chosen.jquery.min.js"></script>
 
 <script src="js/custom.js"></script>
+
+<script type="text/javascript">
+
+
+</script>
+
 <script>
+  var del=document.getElementsByClassName('btn-delete1');
+  for(var i=0;i<del.length;i++){
+      del[i].addEventListener('click',function(el){
+        var stuid=el.srcElement.getAttribute('stuid');
+        var btn_delete=document.getElementById('delete');
+        btn_delete.setAttribute('href',"delete.php?obj=student&id="+stuid);
+        console.log("delete.php?obj=student&id="+stuid);
+    })
+  }
   jQuery(document).ready(function() {
     
     jQuery('#table1').dataTable();
