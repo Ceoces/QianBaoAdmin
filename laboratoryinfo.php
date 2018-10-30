@@ -26,7 +26,7 @@
   }
 
   for($i=$p;$i>=0;$i--){
-    $sql_week="select count(*) as num,date_format(time,'%a') as day from V_signtable where time >= date_sub(now(),interval 1 week) and static=1 and laboratoryid=".$_GET['id']." and date_format(time,'%w')=".($i+1)." group by stuname,date_format(time,'%w') order by time asc";
+    $sql_week="select count(*) as num,date_format(intime,'%a') as day from V_signtable where intime >= date_sub(now(),interval 1 week) and static=1 and laboratoryid=".$_GET['id']." and date_format(intime,'%w')=".($i+1)." group by stuname,date_format(intime,'%w') order by intime asc";
     $row_week=$db->findAll($sql_week);
     $date_week[$day_list[$i]]=0;
     if(isset($row_week[0]['num'])){
@@ -36,7 +36,7 @@
     }
   }
   for($i=6;$i>$p;$i--){
-    $sql_week="select count(*) as num,date_format(time,'%a') as day from V_signtable where time >= date_sub(now(),interval 1 week) and static=1 and laboratoryid=".$_GET['id']." and date_format(time,'%w')=".($i+1)." group by stuname,date_format(time,'%w') order by time asc";
+    $sql_week="select count(*) as num,date_format(intime,'%a') as day from V_signtable where intime >= date_sub(now(),interval 1 week) and static=1 and laboratoryid=".$_GET['id']." and date_format(intime,'%w')=".($i+1)." group by stuname,date_format(intime,'%w') order by intime asc";
     $row_week=$db->findAll($sql_week);
     $date_week[$day_list[$i]]=0;
     if(isset($row_week[0]['num'])){
@@ -46,7 +46,7 @@
     }
   }
 
-  $sql_month="select date_format(time,'%d') as time,stuname,stuid,static from V_signtable where time >= date_sub(now(),interval 1 month) and static=1 and laboratoryid=".$_GET['id']." group by stuname,date_format(time,'%w') order by time asc";
+  $sql_month="select date_format(intime,'%d') as time,stuname,stuid,static from V_signtable where intime >= date_sub(now(),interval 1 month) and static=1 and laboratoryid=".$_GET['id']." group by stuname,date_format(intime,'%w') order by intime asc";
 
   $row_month=$db->findAll($sql_month);
   $num_month=array();
@@ -180,7 +180,7 @@
               
               <?php
                 //人员信息
-                $sql="select * from v_signtable where laboratoryid=".$_GET['id']." and to_days(time) = to_days(now())  order by time desc";
+                $sql="select * from v_signtable where laboratoryid=".$_GET['id']." and to_days(intime) = to_days(now())  order by intime desc";
                 //echo $sql;
                 $v_sign_row=$db->findAll($sql);
                 $sql="select * from v_stu_laboratory where laboratoryid=".$v_laboratory_row[0]['id'];
@@ -202,7 +202,7 @@
                       echo "<h3 class='follower-name'>".$v_sign_row[$i]['stuname']."</h3>";
                       echo "<div class='profile-location'><i class='fa fa-map-marker'></i> ".$v_sign_row[$i]['class']."</div>";
                       echo "<div class='profile-position'><i class='fa fa-briefcase'></i> ".$v_sign_row[$i]['proname']."</div>";
-                      echo "<div class='profile-location'><i class='fa  fa-clock-o'></i> ".$v_sign_row[$i]['time']."进入</div>";
+                      echo "<div class='profile-location'><i class='fa  fa-clock-o'></i> ".$v_sign_row[$i]['intime']."进入</div>";
                       echo "<div class='mb20'></div>";
                       echo "<button class='btn btn-sm btn-success mr5'><i class='fa fa-user'></i>详细资料</button>";
                       echo "<button class='btn btn-sm btn-white'><i class='fa fa-sign-out'></i>移出</button>";
@@ -220,7 +220,7 @@
               //签到情况
               $page=isset($_GET['page'])?(int)$_GET['page']:0;
               $begin=$page*10;
-              $sql="select * from v_signtable where laboratoryid=".$_GET['id']." order by time    desc limit ".$begin.",".($begin+10);
+              $sql="select * from v_signtable where laboratoryid=".$_GET['id']." order by intime    desc limit ".$begin.",".($begin+10);
               
               $v_sign_row=$db->findAll($sql);
 
@@ -234,14 +234,16 @@
                   echo "<img class='media-object act-thumb' src='images/photos/user1.png' alt='' /></a>";
                   echo "<div class='media-body act-media-body'>";
                   echo "<strong>".$v_sign_row[$i]['stuname']."</strong>&nbsp;&nbsp;";
-                  echo "<strong>";
+                  echo "</br>";
+                  echo "<small class='text-muted'>";
                   if($v_sign_row[$i]['static']=='1'){
-                    echo "进入";
+                    echo "进入&nbsp;&nbsp".$v_sign_row[$i]['intime'];
                   } else {
-                    echo "离开";
+                    echo "进入&nbsp;&nbsp".$v_sign_row[$i]['intime'];
+                    echo "&nbsp;&nbsp离开&nbsp;&nbsp".$v_sign_row[$i]['outtime'];
                   }
-                  echo "</strong>. <br />";
-                  echo "<small class='text-muted'>".$v_sign_row[$i]['time']."</small>";
+
+                  echo "</small>";
                   echo "</div></div>";
                 }
                ?>
@@ -290,7 +292,6 @@
               <?php
                 //人员信息
                 
-
                 if (count($v_stu_laboratory_row)==0) {
                   echo "暂无成员";
                 }
@@ -303,7 +304,6 @@
                   echo "<div class='media-body'>";
                   echo "<h3 class='follower-name'>".$v_stu_laboratory_row[$i]['stuname']."</h3>";
                   echo "<div class='profile-location'><i class='fa fa-map-marker'></i> ".$v_stu_laboratory_row[$i]['class']."</div>";
-                  echo "<div class='profile-location'><i class='fa  fa-clock-o'></i> ".$v_stu_laboratory_row[$i]['time']."</div>";
                   echo "<div class='mb20'></div>";
                   echo "<button class='btn btn-sm btn-success mr5'><i class='fa fa-user'></i>详细资料</button>";
                   echo "<button class='btn btn-sm btn-white'><i class='fa fa-sign-out'></i>移出</button>";
@@ -315,6 +315,7 @@
           </div>
           <div class="tab-pane" id="data">
             <div class="row">
+                <div id="all" style="height: 300px"></div>
               <div class="col-md-8">
                     <div id="week" style="height:300px;width:500px;position: relative;">
                     </div>
@@ -658,6 +659,59 @@ if (option && typeof option === "object") {
   
   });
 </script>
+  <script type="text/javascript">
+    var dom = document.getElementById("all");
+    var myChart = echarts.init(dom);
+    var app = {};
+    option = null;
+
+    data = [["2000-06-05",5],["2000-06-06",129],["2000-06-07",135],["2000-06-08",86],["2000-06-09",73],["2000-06-10",85],["2000-06-11",73],["2000-06-12",68],["2000-06-13",92],["2000-06-14",130],["2000-06-15",245],["2000-06-16",139],["2000-06-17",115],["2000-06-18",111],["2000-06-19",309],["2000-06-20",206],["2000-06-21",137],["2000-06-22",128],["2000-06-23",85],["2000-06-24",94],["2000-06-25",71],["2000-06-26",106],["2000-06-27",84],["2000-06-28",93],["2000-06-29",85],["2000-06-30",73],["2000-07-01",83],["2000-07-02",125],["2000-07-03",107],["2000-07-04",82],["2000-07-05",44],["2000-07-06",72],["2000-07-07",106],["2000-07-08",107],["2000-07-09",66],["2000-07-10",91],["2000-07-11",92],["2000-07-12",113],["2000-07-13",107],["2000-07-14",131],["2000-07-15",111],["2000-07-16",64],["2000-07-17",69],["2000-07-18",88],["2000-07-19",77],["2000-07-20",83],["2000-07-21",111],["2000-07-22",57],["2000-07-23",55],["2000-07-24",60]];
+
+    var dateList = data.map(function (item) {
+        return item[0];
+    });
+    var valueList = data.map(function (item) {
+        return item[1];
+    });
+
+    option = {
+
+        // Make gradient line here
+        visualMap: [{
+            show: false,
+            type: 'continuous',
+            seriesIndex: 0,
+            min: 0,
+            max: 100
+        }],
+
+
+        title: [{
+            left: 'center',
+            text: '最近签到记录'
+        }],
+        tooltip: {
+            trigger: 'axis'
+        },
+        xAxis: [{
+            data: dateList
+        }],
+        yAxis: [{
+            splitLine: {show: false}
+        }],
+        grid: [{
+            bottom: '60%'
+        }],
+        series: [{
+            type: 'line',
+            showSymbol: false,
+            data: valueList
+        }]
+    };
+    if (option && typeof option === "object") {
+        myChart.setOption(option, true);
+    }
+      </script>
 
 </body>
 </html>
