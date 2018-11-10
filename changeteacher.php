@@ -18,16 +18,16 @@
           "name"=>$_POST['name'],
           "phone"=>$_POST['phone'],
           "password"=>sha1($_POST['pwd']),
-	  "email"=>$_POST['email'],
-	  "info"=>$_POST['info'],
-	  "static"=>$static
+      	  "email"=>$_POST['email'],
+      	  "info"=>$_POST['info'],
+      	  "static"=>$static
         );
-	$id = $_POST['id'];
-        if(!$db->update("t_teacher",$data,"id='$id'"))
+	     $id = $_POST['id'];
+        if(!$db->update("t_teacher",$data,"id='".$id."'"))
         {
           echo "修改失败！";
         }
-	header("locatio:teachertable.php");
+	   header("locatio:teachertable.php");
     }
 ?>
 
