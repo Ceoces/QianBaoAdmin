@@ -119,13 +119,10 @@
                 <input list="bj1" placeholder="教师" class="form-control" name="teacher" value="<?php echo $row2[0]['teacherid']; ?>" />
                 <datalist id="bj1">
                       <?php 
-                        if (is_root) {
                           for($i=0;$i<count($row1);$i++){
-                            echo "<option value='".$row1[$i]['id']."'>".$row1[$i]['name']."</option>";
+                            echo "<option class='123' value='".$row1[$i]['id']."'>".$row1[$i]['name']."</option>";
                           }
-                        } else{
-                          echo "<option value='".$id."'>".$name."</option>";
-                        }
+
                      ?>
                 </datalist> 
                 
