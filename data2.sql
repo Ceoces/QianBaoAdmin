@@ -11,7 +11,7 @@
  Target Server Version : 50547
  File Encoding         : 65001
 
- Date: 10/10/2018 20:48:59
+ Date: 10/11/2018 23:31:55
 */
 
 SET NAMES utf8mb4;
@@ -35,8 +35,8 @@ CREATE TABLE `t_laboratory`  (
 -- ----------------------------
 -- Records of t_laboratory
 -- ----------------------------
-INSERT INTO `t_laboratory` VALUES (1, '826实验室', 'admin', 30, '先进光子学材料和物理实验室是2001年在“985”一期支持下建立起来的专业实验室，实验室的研究方向为基于新物理原理、新功能材料和新技术，在信息和其他相关领域有科学意...', 0, '2018-08-07 13:02:08');
-INSERT INTO `t_laboratory` VALUES (2, '101实验室', 'su', 20, '101实验室介绍', 0, '2018-08-06 08:46:47');
+INSERT INTO `t_laboratory` VALUES (1, '826实验室', 'admin', 5782345, '', 0, '2018-11-09 10:03:34');
+INSERT INTO `t_laboratory` VALUES (2, '101实验室', '10000', 20, '', 0, '2018-11-09 10:16:21');
 INSERT INTO `t_laboratory` VALUES (22, '创新实验室', 'su', 12, '创新实验室介绍', 0, '2018-08-03 09:15:55');
 
 -- ----------------------------
@@ -59,7 +59,7 @@ CREATE TABLE `t_project`  (
 -- ----------------------------
 -- Records of t_project
 -- ----------------------------
-INSERT INTO `t_project` VALUES (1, '实验室签报系统', 'admin', 1, '开放实验室签报系统', 30, '2018-07-24 09:18:56', '2018-09-29 09:18:59', NULL);
+INSERT INTO `t_project` VALUES (1, '实验室签报系统', 'admin', 1, '先进光子学材料和物理实验室是2001年在“985”一期支持下建立起来的专业实验室，实验室的研究方向为基于新物理原理、新功能材料和新技术，在信息和其他相关领域有科学意...', 30, '2018-07-24 09:18:56', '2018-09-29 09:18:59', NULL);
 INSERT INTO `t_project` VALUES (2, '项目2', 'su', 2, NULL, 10, '2018-07-24 10:41:13', '2018-07-28 10:41:16', NULL);
 INSERT INTO `t_project` VALUES (3, '测试项目a', 'admin', 2, '测试项目介绍', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL);
 
@@ -70,25 +70,36 @@ DROP TABLE IF EXISTS `t_signtable`;
 CREATE TABLE `t_signtable`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `stuid` char(11) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '学生id',
-  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '签到时间',
-  `static` int(1) NOT NULL COMMENT '状态1 进入 0 离开',
+  `intime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '签到时间',
+  `static` int(1) NOT NULL COMMENT '状态1 在实验室 0 不在实验室',
   `laboratoryid` int(11) NOT NULL COMMENT '实验室id',
   `seat` char(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '座位',
+  `outtime` datetime NULL DEFAULT NULL COMMENT '离开时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 35 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Fixed;
+) ENGINE = MyISAM AUTO_INCREMENT = 64 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Fixed;
 
 -- ----------------------------
 -- Records of t_signtable
 -- ----------------------------
-INSERT INTO `t_signtable` VALUES (34, '2', '2018-10-01 13:40:11', 1, 1, '1');
-INSERT INTO `t_signtable` VALUES (33, '1', '2018-10-10 13:40:02', 0, 1, '1');
-INSERT INTO `t_signtable` VALUES (32, '1', '2018-10-10 09:47:38', 1, 1, '1');
-INSERT INTO `t_signtable` VALUES (31, '1', '2018-10-10 09:47:30', 0, 1, '1');
-INSERT INTO `t_signtable` VALUES (30, '1', '2018-10-10 09:18:20', 1, 1, '1');
-INSERT INTO `t_signtable` VALUES (29, '2', '2018-10-09 21:34:03', 0, 1, '1');
-INSERT INTO `t_signtable` VALUES (1, '2', '2018-10-09 21:33:52', 1, 1, '1');
-INSERT INTO `t_signtable` VALUES (28, '1', '2018-10-09 21:33:22', 0, 1, '1');
-INSERT INTO `t_signtable` VALUES (27, '1', '2018-10-09 21:33:13', 1, 1, '1');
+INSERT INTO `t_signtable` VALUES (63, '3', '2018-11-10 22:18:06', 0, 1, '', '2018-11-10 22:18:17');
+INSERT INTO `t_signtable` VALUES (62, '3', '2018-11-10 22:09:50', 0, 1, '', '2018-11-10 22:17:46');
+INSERT INTO `t_signtable` VALUES (61, '3', '2018-11-10 22:09:40', 0, 1, '', '2018-11-10 22:09:50');
+INSERT INTO `t_signtable` VALUES (60, '3', '2018-11-02 18:30:56', 0, 1, '', '2018-11-02 18:38:54');
+INSERT INTO `t_signtable` VALUES (59, '3', '2018-11-02 18:24:33', 0, 1, '', '2018-11-02 18:24:51');
+INSERT INTO `t_signtable` VALUES (58, '1', '2018-11-02 18:19:29', 1, 1, '', NULL);
+INSERT INTO `t_signtable` VALUES (57, '1', '2018-11-02 18:16:45', 0, 1, '', '2018-11-02 18:17:33');
+INSERT INTO `t_signtable` VALUES (56, '1', '2018-11-02 18:14:54', 0, 1, '', '2018-11-02 18:16:32');
+INSERT INTO `t_signtable` VALUES (55, '1', '2018-10-30 14:55:31', 1, 1, '', NULL);
+INSERT INTO `t_signtable` VALUES (54, '1', '2018-10-25 00:11:07', 0, 1, '', '2018-10-25 00:11:16');
+INSERT INTO `t_signtable` VALUES (53, '1', '2018-10-25 00:09:11', 0, 1, '', '2018-10-25 00:09:27');
+INSERT INTO `t_signtable` VALUES (52, '1', '2018-10-25 00:08:07', 0, 1, '', '2018-10-25 00:09:27');
+INSERT INTO `t_signtable` VALUES (51, '1', '2018-10-25 00:05:00', 0, 1, '', '2018-10-25 00:09:27');
+INSERT INTO `t_signtable` VALUES (50, '1', '2018-10-24 08:33:08', 1, 1, '', NULL);
+INSERT INTO `t_signtable` VALUES (49, '1', '2018-10-24 08:29:59', 0, 1, '', '2018-10-24 08:32:56');
+INSERT INTO `t_signtable` VALUES (48, '1', '2018-10-23 19:59:52', 1, 1, '', NULL);
+INSERT INTO `t_signtable` VALUES (47, '1', '2018-10-22 23:54:10', 1, 1, '', NULL);
+INSERT INTO `t_signtable` VALUES (46, '1', '2018-10-22 23:39:14', 0, 1, '', '2018-10-22 23:39:31');
+INSERT INTO `t_signtable` VALUES (45, '1', '2018-10-22 22:25:48', 0, 1, '1', '2018-10-22 23:39:31');
 
 -- ----------------------------
 -- Table structure for t_stu_laboratory
@@ -149,7 +160,7 @@ CREATE TABLE `t_student`  (
   `sex` int(1) NULL DEFAULT NULL COMMENT '性别 （1：男  0：女）',
   `phone` char(12) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '电话',
   `email` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '邮箱',
-  `intime` int(11) NULL DEFAULT 0 COMMENT '在实验室累计时间',
+  `intime` bigint(20) NULL DEFAULT 0 COMMENT '在实验室累计时间',
   `info` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '个人介绍',
   `static` int(1) NULL DEFAULT 1 COMMENT '状态 1：在校在实验室 2：离开实验室 3：毕业',
   PRIMARY KEY (`id`) USING BTREE
@@ -158,7 +169,7 @@ CREATE TABLE `t_student`  (
 -- ----------------------------
 -- Records of t_student
 -- ----------------------------
-INSERT INTO `t_student` VALUES ('3', 'admin', '赵恩伯', '集成17-1', '77de68daecd823babbb58edb1c8e14d7106e83bb', '0000-00-00 00:00:00', 1, '15561858955', '2218722428@qq.com', 0, NULL, 1);
+INSERT INTO `t_student` VALUES ('3', 'admin', '赵恩伯', '集成17-1', '77de68daecd823babbb58edb1c8e14d7106e83bb', '2018-11-10 22:18:18', 1, '15561858955', '2218722428@qq.com', 11, NULL, 1);
 INSERT INTO `t_student` VALUES ('1', 'su', '杨恒', '1111', '2ea6201a068c5fa0eea5', '0000-00-00 00:00:00', 1, NULL, NULL, 0, NULL, 1);
 INSERT INTO `t_student` VALUES ('2', 'admin', '梁成辉', '123456', '7c4a8d09ca3762af61e5', '0000-00-00 00:00:00', 1, NULL, NULL, 0, NULL, 1);
 INSERT INTO `t_student` VALUES ('123', 'su', '学生A', '集成17-1', '40bd001563085fc35165', '2018-09-04 00:00:00', NULL, NULL, NULL, 0, NULL, 1);
@@ -183,8 +194,9 @@ CREATE TABLE `t_teacher`  (
 -- ----------------------------
 -- Records of t_teacher
 -- ----------------------------
-INSERT INTO `t_teacher` VALUES ('admin', 'admin', 'd033e22ae348aeb5660fc2140aec35850c4da997', NULL, '15945689568', NULL, 0);
-INSERT INTO `t_teacher` VALUES ('su', 'su', '363eb224f6ff8d3c5163a8805222acbf939a65b3', NULL, '13345893791', NULL, 1);
+INSERT INTO `t_teacher` VALUES ('admin', 'admin', 'd033e22ae348aeb5660fc2140aec35850c4da997', '先进光子学材料和物理实验室是2001年在“985”一期支持下建立起来的专业实验室，实验室的研究方向为基于新物理原理、新功能材料和新技术，在信息和其他相关领域有科学意...', '15945689568', NULL, 0);
+INSERT INTO `t_teacher` VALUES ('su', 'su', '363eb224f6ff8d3c5163a8805222acbf939a65b3', '先进光子学材料和物理实验室是2001年在“985”一期支持下建立起来的专业实验室，实验室的研究方向为基于新物理原理、新功能材料和新技术，在信息和其他相关领域有科学意...', '13345893791', NULL, 1);
+INSERT INTO `t_teacher` VALUES ('10000', '老师1', '8a12a315082a345f1a9d3ad14b214cd36d310cf8', '对方是个三个人帅哥帅哥都是天然图画然后', '110', '110@qq.com', 0);
 
 -- ----------------------------
 -- View structure for v_laboratory
@@ -200,7 +212,8 @@ t_laboratory.id,
 t_laboratory.info,
 t_laboratory.teacherid,
 t_teacher.phone,
-t_teacher.email
+t_teacher.email,
+t_teacher.info AS teacherinfo
 FROM
 t_laboratory
 INNER JOIN t_teacher ON t_laboratory.teacherid = t_teacher.id ;
@@ -213,7 +226,7 @@ CREATE ALGORITHM = UNDEFINED DEFINER = `root`@`localhost` SQL SECURITY DEFINER V
 t_teacher.`name` AS teachername,
 t_teacher.id AS teacherid,
 t_project.`name` AS proname,
-t_project.info,
+t_project.info AS proinfo,
 t_project.maxStuNum,
 t_project.startTime,
 t_project.endTime,
@@ -228,35 +241,10 @@ INNER JOIN t_project ON t_project.teacherid = t_teacher.id
 INNER JOIN t_laboratory ON t_project.laboratoryid = t_laboratory.id ;
 
 -- ----------------------------
--- View structure for v_student
--- ----------------------------
-DROP VIEW IF EXISTS `v_student`;
-CREATE ALGORITHM = UNDEFINED DEFINER = `root`@`localhost` SQL SECURITY DEFINER VIEW `v_student` AS SELECT
-t_student.`name` AS stuname,
-t_student.class,
-t_student.sex,
-t_student.phone,
-t_student.email,
-t_teacher.`name` AS teachername,
-t_project.`name` AS proname,
-t_laboratory.`name` AS laboratoryname,
-t_student.id,
-t_student.addtime,
-t_teacher.id AS teacherid
-FROM
-t_student
-LEFT JOIN t_teacher ON t_student.teacherid = t_teacher.id
-LEFT JOIN t_stu_pro ON t_student.id = t_stu_pro.studentid
-LEFT JOIN t_project ON t_stu_pro.proid = t_project.id
-LEFT JOIN t_stu_laboratory ON t_student.id = t_stu_laboratory.studentid
-LEFT JOIN t_laboratory ON t_stu_laboratory.laboratoryid = t_laboratory.id ;
-
--- ----------------------------
 -- View structure for v_signtable
 -- ----------------------------
 DROP VIEW IF EXISTS `v_signtable`;
 CREATE ALGORITHM = UNDEFINED DEFINER = `root`@`localhost` SQL SECURITY DEFINER VIEW `v_signtable` AS SELECT
-t_signtable.time,
 t_signtable.static,
 t_laboratory.`name` AS laboratoryname,
 t_signtable.seat,
@@ -266,7 +254,9 @@ v_student.teachername,
 v_student.phone,
 v_student.class,
 v_student.proname,
-v_student.id AS stuid
+v_student.id AS stuid,
+t_signtable.intime,
+t_signtable.outtime
 FROM
 t_signtable
 INNER JOIN t_laboratory ON t_signtable.laboratoryid = t_laboratory.id
@@ -311,3 +301,30 @@ INNER JOIN t_student ON t_student.id = t_stu_pro.studentid
 INNER JOIN t_project ON t_project.id = t_stu_pro.proid ;
 
 SET FOREIGN_KEY_CHECKS = 1;
+
+-- ----------------------------
+-- View structure for v_student
+-- ----------------------------
+DROP VIEW IF EXISTS `v_student`;
+CREATE ALGORITHM = UNDEFINED DEFINER = `root`@`localhost` SQL SECURITY DEFINER VIEW `v_student` AS SELECT
+t_student.`name` AS stuname,
+t_student.class,
+t_student.sex,
+t_student.phone,
+t_student.email,
+t_teacher.`name` AS teachername,
+t_project.`name` AS proname,
+t_laboratory.`name` AS laboratoryname,
+t_student.id,
+t_student.addtime,
+t_teacher.id AS teacherid,
+t_laboratory.id AS laboratoryid,
+t_student.`password`,
+t_student.intime
+FROM
+t_student
+LEFT JOIN t_teacher ON t_student.teacherid = t_teacher.id
+LEFT JOIN t_stu_pro ON t_student.id = t_stu_pro.studentid
+LEFT JOIN t_project ON t_stu_pro.proid = t_project.id
+LEFT JOIN t_stu_laboratory ON t_student.id = t_stu_laboratory.studentid
+LEFT JOIN t_laboratory ON t_stu_laboratory.laboratoryid = t_laboratory.id ;
