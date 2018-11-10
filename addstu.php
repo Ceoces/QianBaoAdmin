@@ -32,7 +32,7 @@ if (isset($_POST['name']) && isset($_POST['class']) && isset($_POST['teacher']) 
     }
   }
 
-  if (!isset($_POST['laboratory'])) {
+  if (isset($_POST['laboratory'])) {
     $data = $arrayName = array(
       'studentid' => $_POST['id'],
       'laboratoryid' => $_POST['laboratory']
