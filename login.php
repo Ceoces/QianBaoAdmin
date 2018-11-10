@@ -21,6 +21,7 @@
 
 <body class="signin">
   <?php
+  require_once('360webscan.php');
   session_start();
   $_SESSION['id']='';
   $_SESSION['pwd']='';
@@ -28,7 +29,7 @@
   {
    if(strtolower($_SESSION["captcha"]) != strtolower($_POST['captcha'])){
 		$_SESSION['id']="";
-      		$_SESSION['pwd']="";
+    $_SESSION['pwd']="";
 		header('location:login.php?error=2');
 	}
    else{
