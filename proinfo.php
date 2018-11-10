@@ -89,7 +89,7 @@
             </div>
             
             <div class="mb20"></div>
-          <p class="mb30"><?php echo $v_pro_row[0]['info']; ?> </p>
+          <p class="mb30"><?php echo $v_pro_row[0]['proinfo']; ?> </p>
 
            <p><button class="btn btn-primary" style="margin-right: 20px;">添加成员</button>
             <a href="changepro.php?id=<?php echo $_GET['id'] ?>"><button class="btn btn-primary">修改信息</button></a></p>
@@ -157,25 +157,10 @@
 <script src="js/jquery.sparkline.min.js"></script>
 <script src="js/toggles.min.js"></script>
 <script src="js/retina.min.js"></script>
-<script src="js/jquery.cookies.js"></script>
 
-<script src="js/jquery.prettyPhoto.js"></script>
 <script src="js/holder.js"></script>
 
 <script src="js/custom.js"></script>
-<script>
-  jQuery(document).ready(function(){
-    
-    jQuery("a[rel^='prettyPhoto']").prettyPhoto();
-    
-    //Replaces data-rel attribute to rel.
-    //We use data-rel because of w3c validation issue
-    jQuery('a[data-rel]').each(function() {
-        jQuery(this).attr('rel', jQuery(this).data('rel'));
-    });
-    
-  });
-</script>
 
 </body>
 </html>
