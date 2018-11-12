@@ -91,8 +91,8 @@
             <div class="mb20"></div>
           <p class="mb30"><?php echo $v_pro_row[0]['proinfo']; ?> </p>
 
-           <p><button class="btn btn-primary" style="margin-right: 20px;">添加成员</button>
-            <a href="changepro.php?id=<?php echo $_GET['id'] ?>"><button class="btn btn-primary">修改信息</button></a></p>
+           <p><a href=<?php echo "'search.php?obj=stu_pro&proid=".$_GET['id']."'"; ?>><button class="btn btn-primary" style="margin-right: 20px;">添加成员</button></a>
+            <a href="changepro.php?id=<?php echo $_GET['id'] ?>"; ><button class="btn btn-primary">修改信息</button></a></p>
 
           </div><!-- profile-header -->
 
@@ -126,8 +126,8 @@
                   echo "<div class='profile-position'><i class='fa fa-briefcase'></i> ".$v_stu_pro_row[$i]['proname']."</div>";
                   echo "<div class='profile-location'><i class='fa  fa-clock-o'></i> ".$v_stu_pro_row[$i]['time']."</div>";
                   echo "<div class='mb20'></div>";
-                  echo "<button class='btn btn-sm btn-success mr5'><i class='fa fa-user'></i>详细资料</button>";
-                  echo "<button class='btn btn-sm btn-white'><i class='fa fa-sign-out'></i>移出</button>";
+                  echo "<a href='stuinfo.php?id=".$v_stu_pro_row[$i]['studentid']."'><button class='btn btn-sm btn-success mr5'><i class='fa fa-user'></i>详细资料</button></a>";
+                  echo "<a href='delete.php?obj=stu_pro&stuid=".$v_stu_pro_row[$i]['studentid']."&proid=".$_GET['id']."'><button class='btn btn-sm btn-white'><i class='fa fa-sign-out'></i>移出</button></a>";
                   echo "</div></div>";
                 }
               ?>
