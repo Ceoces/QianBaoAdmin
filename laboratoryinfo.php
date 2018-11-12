@@ -1,5 +1,8 @@
 <?php
   header("Content-Type: text/html; charset=utf-8");
+  error_reporting(0);
+  ini_set('display_errors','off');
+  require_once('360webscan.php');
   require_once('logincheck.php'); 
   include_once('mysql.class.php');
   if (isset($_GET['id'])) {
@@ -157,7 +160,7 @@
                   }?>
           </p>
 
-            <button class="btn btn-primary">添加成员</button>
+            <a href=<?php echo "'search.php?laboratoryid=".$_GET['id']."'"; ?>><button class="btn btn-primary">添加成员</button></a>
 
           </div>
         
@@ -204,7 +207,7 @@
                       echo "<div class='profile-position'><i class='fa fa-briefcase'></i> ".$v_sign_row[$i]['proname']."</div>";
                       echo "<div class='profile-location'><i class='fa  fa-clock-o'></i> ".$v_sign_row[$i]['intime']."进入</div>";
                       echo "<div class='mb20'></div>";
-                      echo "<button class='btn btn-sm btn-success mr5'><i class='fa fa-user'></i>详细资料</button>";
+                      echo "<a href='stuinfo.php?id=".$v_sign_row[$i]['stuid']."'><button class='btn btn-sm btn-success mr5'><i class='fa fa-user'></i>详细资料</button></a>";
                       echo "<button class='btn btn-sm btn-white'><i class='fa fa-sign-out'></i>移出</button>";
                       echo "</div></div>";
                     }
@@ -305,8 +308,8 @@
                   echo "<h3 class='follower-name'>".$v_stu_laboratory_row[$i]['stuname']."</h3>";
                   echo "<div class='profile-location'><i class='fa fa-map-marker'></i> ".$v_stu_laboratory_row[$i]['class']."</div>";
                   echo "<div class='mb20'></div>";
-                  echo "<button class='btn btn-sm btn-success mr5'><i class='fa fa-user'></i>详细资料</button>";
-                  echo "<button class='btn btn-sm btn-white'><i class='fa fa-sign-out'></i>移出</button>";
+                  echo "<a href='stuinfo.php?id=".$v_stu_laboratory_row[$i]['studentid']."'><button class='btn btn-sm btn-success mr5'><i class='fa fa-user'></i>详细资料</button></a>";
+                  echo "<a href='delete.php?obj=stu_laboratory&stuid=".$v_stu_laboratory_row[$i]['studentid']."&labid=".$_GET['id']."'><button class='btn btn-sm btn-white'><i class='fa fa-sign-out'></i>移出</button></a>";
                   echo "</div></div>";
                 }
               ?>
