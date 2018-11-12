@@ -14,7 +14,6 @@
   $row=$db->findAll($sql);
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -98,7 +97,7 @@
                       { 
                         echo "<tr class='odd gradeX'>";
                         echo "<td><a href='proinfo.php?id=" .$row[$i]['proid']."'>".$row[$i]['proname']."</a></td>";
-                        echo "<td>".$row[$i]['teachername']."</td>";
+                        echo "<td><a href='teacherinfo.php?id=".$row[$i]['teacherid']."'>".$row[$i]['teachername']."</td>";
                         echo "<td><a href='laboratoryinfo.php?id=".$row[$i]['laboratoryid']."'>".$row[$i]['laboratoryname']."</a></td>";
                         echo "<td>".$row[$i]['startTime']."</td>";
                         echo "<td>".$row[$i]['endTime']."</td>";

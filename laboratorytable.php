@@ -91,7 +91,7 @@
                       { 
                         echo "<tr class='odd gradeX'>";
                         echo "<td><a href='laboratoryinfo.php?id=".$row[$i]['id']."'>".$row[$i]['laboratoryname']."</a></td>";
-                        echo "<td>".$row[$i]['teachername']."</td>";
+                        echo "<td><a href='teacherinfo.php?id=".$row[$i]['teacherid']."'>".$row[$i]['teachername']."</td>";
                         echo "<td>".$row[$i]['newtime']."</td>";
                         echo "<td>".$row[$i]['stunum']."</td>";
                         echo "<td>".$row[$i]['maxnum']."</td>";
