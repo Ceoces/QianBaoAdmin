@@ -1,4 +1,7 @@
 <?php
+	if(is_file('360webscan.php')){
+		require_once('360webscan.php');
+	}
 	session_start();
 	 require_once('mysql.class.php');
 	 $db=new Mysql();
