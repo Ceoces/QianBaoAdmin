@@ -17,9 +17,9 @@
 		if(isset($_GET['lab'])&&$_GET['lab']!=NULL){
 			$data=array(
 				'studentid'=>$_GET['stu'],
-				'laboratoryid'=>$_FET['lab']
+				'laboratoryid'=>$_GET['lab']
 			);
-			if($db->save($data,"t_stu_laboratory")){
+			if($db->save("t_stu_laboratory",$data)){
 				header("location:laboratoryinfo.php?id=".$_GET['lab']);
 			}
 		}
@@ -28,10 +28,10 @@
 				'studentid'=>$_GET['stu'],
 				'proid'=>$_GET['pro']
 			);
-			if($db->save($data,"t_stu_pro")){
+			if($db->save("t_stu_pro",$data)){
 				header("location:proinfo.php?id=".$_GET['pro']);
 			}
 		}
 	}
-	header(location:.getenv("HTTP_REFERER"));
+	echo "<script>location.href='".$_SERVER["HTTP_REFERER"]."';</script>"; 
 ?>
