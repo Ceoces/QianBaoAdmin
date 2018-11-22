@@ -29,7 +29,7 @@
   }
 
   for($i=$p;$i>=0;$i--){
-    $sql_week="select count(*) as num,date_format(intime,'%a') as day from V_signtable where intime >= date_sub(now(),interval 1 week) and static=1 and laboratoryid=".$_GET['id']." and date_format(intime,'%w')=".($i+1)." group by stuname,date_format(intime,'%w') order by intime asc";
+    $sql_week="select count(*) as num,date_format(intime,'%a') as day from v_signtable where intime >= date_sub(now(),interval 1 week) and static=1 and laboratoryid=".$_GET['id']." and date_format(intime,'%w')=".($i+1)." group by stuname,date_format(intime,'%w') order by intime asc";
     $row_week=$db->findAll($sql_week);
     $date_week[$day_list[$i]]=0;
     if(isset($row_week[0]['num'])){
@@ -39,7 +39,7 @@
     }
   }
   for($i=6;$i>$p;$i--){
-    $sql_week="select count(*) as num,date_format(intime,'%a') as day from V_signtable where intime >= date_sub(now(),interval 1 week) and static=1 and laboratoryid=".$_GET['id']." and date_format(intime,'%w')=".($i+1)." group by stuname,date_format(intime,'%w') order by intime asc";
+    $sql_week="select count(*) as num,date_format(intime,'%a') as day from v_signtable where intime >= date_sub(now(),interval 1 week) and static=1 and laboratoryid=".$_GET['id']." and date_format(intime,'%w')=".($i+1)." group by stuname,date_format(intime,'%w') order by intime asc";
     $row_week=$db->findAll($sql_week);
     $date_week[$day_list[$i]]=0;
     if(isset($row_week[0]['num'])){
@@ -49,7 +49,7 @@
     }
   }
 
-  $sql_month="select date_format(intime,'%d') as time,stuname,stuid,static from V_signtable where intime >= date_sub(now(),interval 1 month) and static=1 and laboratoryid=".$_GET['id']." group by stuname,date_format(intime,'%w') order by intime asc";
+  $sql_month="select date_format(intime,'%d') as time,stuname,stuid,static from v_signtable where intime >= date_sub(now(),interval 1 month) and static=1 and laboratoryid=".$_GET['id']." group by stuname,date_format(intime,'%w') order by intime asc";
 
   $row_month=$db->findAll($sql_month);
   $num_month=array();

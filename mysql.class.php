@@ -136,7 +136,7 @@ class Mysql {
 	 * @return array		二维数组
 	 */
 	function findAll($sql) {
-		$res = $this->query ( $sql );
+		@$res = $this->query ( $sql );
 		if ($res !== false) {
 			$arr = array ();
 			$row = mysql_fetch_assoc ( $res );
