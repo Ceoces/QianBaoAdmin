@@ -65,21 +65,6 @@
               <input type="text" value="<?php if(isset($_POST['stuname'])) echo $_POST['stuname']; ?>" class="form-control" name="sname" onkeydown="submit_form(event)" />
               
               <div class="mb20"></div>
-
-              <h4 class="subtitle mb5">添加到：</h4>
-              <select class="form-control chosen-select" data-placeholder=<?php echo "'选择一个".($kind?"实验室":"项目")."'"; ?> name=<?php echo "'".($kind?"lab":"pro")."'"; ?> value="1">
-                  <option value=""></option>
-                  <?php 
-                      $sql="select * from ".($kind?"t_laboratory":"t_project");
-                      $row = $db->findAll($sql);
-                      for($i=0;$i<count($row);$i++){
-                        echo "<option value='".$row[$i]['id'];
-                        if($_GET[($kind?'laboratoryid':'proid')]==$row[$i]['id']) 
-                          echo " selected='selected'";
-                        echo "'>".$row[$i]['name']."</option>";
-                      }
-                   ?>
-              </select>
             </form>
             
             <br />
@@ -105,8 +90,13 @@
                         
                         <?php 
                           for($i=0;$i<count($row);$i++){
+                            if($kind){
+                              $href="addRelation.php?stu=".$row[$i]['id']."&lab=".$_GET['laboratoryid'];
+                            } else {
+                              $href="addRelation.php?stu=".$row[$i]['id']."&pro=".$_GET['proid'];
+                            }
                             echo "<div class='media'>";
-                            echo "    <a class='pull-right'>";
+                            echo "    <a class='pull-right' href='".$href."'>";
                             echo "      <button class='btn btn-primary'>加入</button>";
                             echo "    </a>";
                             echo "    <div class='media-body'>";
