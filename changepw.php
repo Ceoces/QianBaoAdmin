@@ -9,7 +9,7 @@
   }
   if(isset($_POST['oldpw'])&&isset($_POST['newpw1'])&&isset($_POST['newpw2']))
   {
-    $sql1="select password from teacher where id='".$_SESSION['id']."'";
+    $sql1="select password from t_teacher where id='".$_SESSION['id']."'";
     $row=$db->findAll($sql1);
     if($row[0]['password']==sha1($_POST['oldpw']))
       {

@@ -1,34 +1,31 @@
 <?php
-  require_once('logincheck.php');
-  include_once('mysql.class.php');
-  $db=new Mysql();
-  if($db->connect($dbhost,$dbuser,$dbpassword,$dbname))
-  {
-    echo "数据库连接错误";
-    die;
-  }
+require_once('logincheck.php');
+include_once('mysql.class.php');
+$db = new Mysql();
+if ($db->connect($dbhost, $dbuser, $dbpassword, $dbname)) {
+  echo "数据库连接错误";
+  die;
+}
     //修改教师
-    if(isset($_POST['name'])&&isset($_POST['id'])&&isset($_POST['pwd'])&&isset($_POST['phone'])&&isset($_POST['email']))
-    {
-	if(!isset($_POST['static']))
-		$static=0;
-	else
-		$static=1;
-        $data=array(
-          "name"=>$_POST['name'],
-          "phone"=>$_POST['phone'],
-          "password"=>sha1($_POST['pwd']),
-      	  "email"=>$_POST['email'],
-      	  "info"=>$_POST['info'],
-      	  "static"=>$static
-        );
-	     $id = $_POST['id'];
-        if(!$db->update("t_teacher",$data,"id='".$id."'"))
-        {
-          echo "修改失败！";
-        }
-	   header("locatio:teachertable.php");
-    }
+if (isset($_POST['name']) && isset($_POST['id']) && isset($_POST['pwd']) && isset($_POST['phone']) && isset($_POST['email'])) {
+  if (!isset($_POST['static']))
+    $static = 0;
+  else
+    $static = 1;
+  $data = array(
+    "name" => $_POST['name'],
+    "phone" => $_POST['phone'],
+    "password" => sha1($_POST['pwd']),
+    "email" => $_POST['email'],
+    "info" => $_POST['info'],
+    "static" => $static
+  );
+  $id = $_POST['id'];
+  if (!$db->update("t_teacher", $data, "id='$id'")) {
+    echo "修改失败！";
+  }
+  header("location:teachertable.php");
+}
 ?>
 
 <!DOCTYPE html>
@@ -69,17 +66,16 @@
 <section>
   
 <?php require_once('leftpanel.php');
-if(isset($_GET['id']) && strlen($_GET['id'])<=10)
-	$id = $_GET['id'];
+if (isset($_GET['id']) && strlen($_GET['id']) <= 10)
+  $id = $_GET['id'];
 else
-	$id = '0';
-	    $sql = "select name,id,email,phone,info,static from t_teacher where id='$id'";
+  $id = '0';
+$sql = "select name,id,email,phone,info,static from t_teacher where id='$id'";
 $row = $db->find($sql);
-if($row['static']==1){
-	$val="checked";
-}
-else
-	$val="";
+if ($row['static'] == 1) {
+  $val = "checked";
+} else
+  $val = "";
 ?>
   
   <div class="mainpanel">
@@ -121,8 +117,8 @@ else
             <div class="form-group">
               <label class="col-sm-3 control-label">职工号</label>
 	      <div class="col-sm-6">
-		<input type="text" value="<?php echo $row['id'];?>" class="form-control" name="id" readonly/>
-		<input type="hidden" name="id" value="<?php echo $row['id'];?>"></td>
+		<input type="text" value="<?php echo $row['id']; ?>" class="form-control" name="id" readonly/>
+		<input type="hidden" name="id" value="<?php echo $row['id']; ?>"></td>
               </div>
             </div>
 

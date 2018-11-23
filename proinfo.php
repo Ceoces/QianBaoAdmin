@@ -49,8 +49,8 @@
         <span class="label">位置：</span>
         <ol class="breadcrumb">
           <li><a href="index.php">主页</a></li>
-          <li><a href="laboratorytable.php">实验室管理</a></li>
-          <li class="active">实验室信息</li>
+          <li><a href="laboratorytable.php">项目管理</a></li>
+          <li class="active">项目信息</li>
         </ol>
       </div>
     </div>

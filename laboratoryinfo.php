@@ -2,7 +2,6 @@
   header("Content-Type: text/html; charset=utf-8");
   error_reporting(0);
   ini_set('display_errors','off');
-  require_once('360webscan.php');
   require_once('logincheck.php'); 
   include_once('mysql.class.php');
   if (isset($_GET['id'])) {

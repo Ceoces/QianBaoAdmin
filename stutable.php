@@ -95,7 +95,8 @@
                         echo "<td><a href='stuinfo.php?id=" .$row[$i]['id']."'>".$row[$i]['stuname']."</a></td>";
                         echo "<td>".$row[$i]['class']."</td>";
                         echo "<td><a href='teacherinfo.php?id=".$row[$i]['teacherid']."'>".$row[$i]['teachername']."</a></td>";
-                        echo "<td><a href='laboratoryinfo.php?id=".$row[$i]['id']."'>".$row[$i]['laboratoryname']."</a></td>";
+                        echo "<td><a href='laboratoryinfo.php?id=".$row[$i]['laboratory
+                        id']."'>".$row[$i]['laboratoryname']."</a></td>";
                         echo "<td>".$row[$i]['addtime']."</td>";
                         echo "<td><a href='changestu.php?id=".$row[$i]['id']."'><button class='btn btn-warning btn-sm'>修改</button></a>&nbsp;&nbsp;&nbsp;&nbsp;<button class='btn btn-danger btn-sm btn-delete1' stuid='".$row[$i]['id']."'  data-toggle='modal' data-target='#myModal'>删除</button></td>";
                         echo "</tr>";
