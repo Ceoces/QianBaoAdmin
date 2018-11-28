@@ -84,9 +84,6 @@
               <tbody>
                  <?php  
                   $sql="select * from v_project ";
-                  if(is_root==0){
-                    $sql="select * from v_project where teacherid='".$_SESSION['id']."'";
-                  }
                   if($db->connect($dbhost,$dbuser,$dbpassword,$dbname))
                   {
                     echo "数据库连接错误";
