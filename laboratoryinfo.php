@@ -13,6 +13,9 @@
   $len=count($row);
   $testarr=array();
 
+  //加载二维码
+  if(is_file('/QRimg/'+$_GET['id']+'.png')){}
+
   //数据统计
 
   //每周数据统计
@@ -144,9 +147,16 @@
                   }?>
             </div>
 
+          <?php
+            //加载二维码
+            $QRImgUrl = 'QRimg/'.$_GET['id'].'.png';
+            if(!file_exists($QRImgUrl)){
+              include_once('QRimg/phpqrcode.php');
+              QRcode::png("http://stu.jeehon.com/index.php?id=".$_GET['id'],$QRImgUrl,'L',6,2);
+            }
+            echo "<img src='".$QRImgUrl."''>";
+          ?>
 
-            
-            <div class="mb20"></div>
           <div class="mb-30"></div>
           <h4 ><strong>实验室介绍</strong></h4>
           <div class="mb-30"></div>
