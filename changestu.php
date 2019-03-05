@@ -1,6 +1,9 @@
 ﻿<?php
+require_once('360webscan.php');
 require_once('logincheck.php');
 include_once('mysql.class.php');
+error_reporting(false);
+ini_set('display_errors','off');
 $db = new Mysql();
 if ($db->connect($dbhost, $dbuser, $dbpassword, $dbname)) {
   echo "数据库连接错误";
@@ -12,7 +15,7 @@ if (isset($_POST['name']) && isset($_POST['class']) && isset($_POST['teacher']) 
     "name" => $_POST['name'],
     "class" => $_POST['class'],
     "teacherid" => $_POST['teacher'],
-    "proid" => $_POST['project'],
+    //"proid" => $_POST['project'],
     "id" => $_POST['id'],
     "phone" => $_POST['phone'],
     "password" => sha1($_POST['id']),
@@ -33,7 +36,7 @@ if (isset($_POST['name']) && isset($_POST['class']) && isset($_POST['teacher']) 
     }
   }
 
-  if (!isset($_POST['laboratory'])) {
+  if (isset($_POST['laboratory'])) {
     $data = $arrayName = array(
       'studentid' => $_POST['id'],
       'laboratoryid' => $_POST['laboratory']
@@ -43,11 +46,16 @@ if (isset($_POST['name']) && isset($_POST['class']) && isset($_POST['teacher']) 
     }
   }
   header("location:stutable.php");
-} else {
-  $id = $_GET["id"];
-  $sel = "select id,name,class,phone,teacherid,proid,laboratoryid from t_student where id = $id ";
-  $it = $db->find($sel);
-}
+  } else {
+    if(is_numeric($_GET["id"])){
+      $id = substr($_GET["id"],0,10);
+      $sel = "select id,stuname,class,phone,teacherid,laboratoryid from v_student where id = $id ";
+      $it = $db->find($sel); 
+    }
+    else{
+      header("location:InputError.html");
+    }
+  }
 ?>
 
 <!DOCTYPE html>
@@ -115,12 +123,12 @@ if (isset($_POST['name']) && isset($_POST['class']) && isset($_POST['teacher']) 
         </div>
         <div class="panel-body panel-body-nopadding">
           
-          <form id="form" class="form-horizontal form-bordered" method="post" action="changStudent.php">
+          <form id="form" class="form-horizontal form-bordered" method="post" action="changstu.php">
             
             <div class="form-group">
               <label class="col-sm-3 control-label">姓名</label>
               <div class="col-sm-6">
-                <input type="text" placeholder="姓名" class="form-control" name="name" value = "<?php echo $it['name'] ?>"/>
+                <input type="text" placeholder="姓名" class="form-control" name="name" value = "<?php echo $it['stuname'] ?>"/>
               </div>
             </div>
 
@@ -158,7 +166,7 @@ if (isset($_POST['name']) && isset($_POST['class']) && isset($_POST['teacher']) 
                     }
                     $row = $db->findAll($sql);
                     for ($i = 0; $i < count($row); $i++) {
-                      echo "<option value='" . $row[$i]['id'] . "'>" . $row[$i]['name'] . "</option>";
+                      echo "<option value='" . $row[$i]['id'] . "'>" . $row[$i]['stuname'] . "</option>";
                     }
                     ?>
                 </datalist> 
@@ -179,7 +187,7 @@ if (isset($_POST['name']) && isset($_POST['class']) && isset($_POST['teacher']) 
                     }
                     $row = $db->findAll($sql);
                     for ($i = 0; $i < count($row); $i++) {
-                      echo "<option value='" . $row[$i]['id'] . "'>" . $row[$i]['name'] . "</option>";
+                      echo "<option value='" . $row[$i]['id'] . "'>" . $row[$i]['stuname'] . "</option>";
                     }
                     ?>
                 </datalist> 
@@ -200,7 +208,7 @@ if (isset($_POST['name']) && isset($_POST['class']) && isset($_POST['teacher']) 
                     }
                     $row = $db->findAll($sql);
                     for ($i = 0; $i < count($row); $i++) {
-                      echo "<option value='" . $row[$i]['id'] . "'>" . $row[$i]['name'] . "</option>";
+                      echo "<option value='" . $row[$i]['id'] . "'>" . $row[$i]['stuname'] . "</option>";
                     }
                     ?>
                 </datalist> 
