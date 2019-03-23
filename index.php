@@ -36,7 +36,7 @@
  
       <?php require_once('headerright.php'); ?>
 
-    <div class="pageheader">
+    <!-- <div class="pageheader">
       <h2><i class="fa fa-home"></i> 主页 </h2>
       <div class="breadcrumb-wrapper">
         <span class="label">位置：</span>
@@ -44,7 +44,7 @@
           <li><a href="index.html">主页</a></li>
         </ol>
       </div>
-    </div>
+    </div> -->
     
     <div class="contentpanel">
       <div class="row">

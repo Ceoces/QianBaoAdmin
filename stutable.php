@@ -42,7 +42,7 @@
     
     <?php require_once('headerright.php'); ?>
         
-    <div class="pageheader">
+    <!-- <div class="pageheader">
       <h2><i class="fa fa-home"></i> 查看学生信息 </h2>
       <div class="breadcrumb-wrapper">
         <span class="label">位置：</span>
@@ -52,7 +52,7 @@
           <li class="active">查看学生信息</li>
         </ol>
       </div>
-    </div>
+    </div> -->
 
     <div class="contentpanel">
       <div class="panel panel-default">
@@ -95,8 +95,7 @@
                         echo "<td><a href='stuinfo.php?id=" .$row[$i]['id']."'>".$row[$i]['stuname']."</a></td>";
                         echo "<td>".$row[$i]['class']."</td>";
                         echo "<td><a href='teacherinfo.php?id=".$row[$i]['teacherid']."'>".$row[$i]['teachername']."</a></td>";
-                        echo "<td><a href='laboratoryinfo.php?id=".$row[$i]['laboratory
-                        id']."'>".$row[$i]['laboratoryname']."</a></td>";
+                        echo "<td><a href='laboratoryinfo.php?id=".$row[$i]['laboratoryid']."'>".$row[$i]['laboratoryname']."</a></td>";
                         echo "<td>".$row[$i]['addtime']."</td>";
                         echo "<td><a href='changestu.php?id=".$row[$i]['id']."'><button class='btn btn-warning btn-sm'>修改</button></a>&nbsp;&nbsp;&nbsp;&nbsp;<button class='btn btn-danger btn-sm btn-delete1' stuid='".$row[$i]['id']."'  data-toggle='modal' data-target='#myModal'>删除</button></td>";
                         echo "</tr>";

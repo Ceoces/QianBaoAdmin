@@ -1,22 +1,22 @@
 <?php
-  require_once('logincheck.php');
-  header("Content-Type: text/html; charset=utf-8");
-  include_once('mysql.class.php');
+require_once('logincheck.php');
+header("Content-Type: text/html; charset=utf-8");
+include_once('mysql.class.php');
   //$stuid = mysql_real_escape_string(htmlspecialchars($_GET['id']));
-  $stuid=$_GET['id'];
-  if (!empty($stuid)) {
-    $sql = "select * from v_stu_laboratory where studentid=" . $stuid;
-  } else {
+$stuid = $_GET['id'];
+if (!empty($stuid)) {
+  $sql = "select * from v_stu_laboratory where studentid=" . $stuid;
+} else {
     //header("location: stutable.php");
-  }
-  $v_stu_laboratory_row = $db->findAll($sql);
-  $sql2 = "select * from v_signtable where stuid=" . $stuid;
-  $row = $db->findAll($sql2);
-  $len = count($row);
-  $sql3 = "select * from v_stu_pro where studentid=" . $stuid;
-  $v_stu_pro_row = $db->findAll($sql3);
-  $sql4 = "select * from v_student where id=" . $stuid;
-  $v_student_row = $db->findAll($sql4);
+}
+$v_stu_laboratory_row = $db->findAll($sql);
+$sql2 = "select * from v_signtable where stuid=" . $stuid;
+$row = $db->findAll($sql2);
+$len = count($row);
+$sql3 = "select * from v_stu_pro where studentid=" . $stuid;
+$v_stu_pro_row = $db->findAll($sql3);
+$sql4 = "select * from v_student where id=" . $stuid;
+$v_student_row = $db->findAll($sql4);
 ?>
 
 <!DOCTYPE html>
@@ -54,7 +54,7 @@
   <div class="mainpanel">
     <?php require_once('headerright.php'); ?>
 
-    <div class="pageheader">
+    <!-- <div class="pageheader">
       <h2><i class="fa fa-home"></i> 学生信息 </h2>
       <div class="breadcrumb-wrapper">
         <span class="label">位置：</span>
@@ -64,16 +64,27 @@
           <li class="active">学生个人信息</li>
         </ol>
       </div>
-    </div>
+    </div> -->
 
     <div class="contentpanel">
       
       <div class="row">
 
         <div class="col-sm-3"> 
-          <img src="images/photos/profile-1.png" class="thumbnail img-responsive" alt="" />
-          <h2 class="profile-name"><?php if (isset($v_stu_laboratory_row[0]['stuname'])) echo $v_stu_laboratory_row[0]['stuname'];
-                                  else echo "暂无"; ?></h2>
+          <img src="<?php 
+              $url="../stupic/".$_GET['id']."jpg";
+              if(is_file($url)){
+                echo $url;
+              } else {
+                echo "../images/user.png";
+              }
+           ?>" class="thumbnail img-responsive" style="width:150px;height:150px;" alt="" />
+          <h2 class="profile-name">
+            <?php 
+            if (isset($v_student_row[0]['stuname'])) echo $v_student_row[0]['stuname'];
+            else echo "暂无";
+            ?>
+            </h2>
             <div class="profile-location"><i class="fa fa-user"></i>
               <?php 
               if (isset($v_student_row[0]['teachername']) && $v_student_row[0]['teachername'] != "") {
@@ -147,7 +158,7 @@
                 echo "<img class='media-object act-thumb' src='images/photos/user1.png' alt='' /></a>";
                 echo "<div class='media-body act-media-body'>";
                 echo "<strong>" . $v_sign_row[$i]['stuname'] . "</strong>&nbsp;&nbsp;</br>";
-                echo "<small class='text-muted'>进入：" . $v_sign_row[$i]['intime'] . "&nbsp;&nbsp;离开：".$v_sign_row[$i]['outtime']."</small>";
+                echo "<small class='text-muted'>进入：" . $v_sign_row[$i]['intime'] . "&nbsp;&nbsp;离开：" . $v_sign_row[$i]['outtime'] . "</small>";
                 echo "</div></div>";
               }
               ?>
@@ -212,7 +223,7 @@
       //echo "<div class='profile-position'><i class='fa fa-briefcase'></i> ".$v_stu_pro_row[$i]['stuname']."</div>";
                 echo "<div class='profile-location'><i class='fa  fa-clock-o'></i> " . $v_stu_pro_row[$i]['time'] . "</div>";
                 echo "<div class='mb20'></div>";
-                echo "<button class='btn btn-sm btn-success mr5'><i class='fa fa-user'></i>详细资料</button>";
+                echo "<a href='proinfo.php?id=" . $v_stu_pro_row[$i]['proid'] . "'><button class='btn btn-sm btn-success mr5'><i class='fa fa-user'></i>详细资料</button></a>";
                   //echo "<button class='btn btn-sm btn-white'><i class='fa fa-sign-out'></i>移出</button>";
                 echo "</div></div>";
               }
@@ -231,7 +242,7 @@
                 //echo $sql;
                 //$v_sign_row=$db->findAll($sql);
               if (count($v_stu_laboratory_row) == 0) {
-                echo "暂未参加任何项目";
+                echo "暂未加入任何实验室";
               }
                // $stu_array = array();
               for ($i = 0; $i < count($v_stu_laboratory_row); $i++) {
@@ -247,7 +258,7 @@
                       //echo "<div class='profile-position'><i class='fa fa-briefcase'></i> ".$v_stu_laboratory_row[$i]['laboratoryname']."</div>";
                 echo "<div class='profile-location'><i class='fa  fa-clock-o'></i> " . $v_stu_laboratory_row[$i]['time'] . "进入</div>";
                 echo "<div class='mb20'></div>";
-                echo "<button class='btn btn-sm btn-success mr5'><i class='fa fa-user'></i>详细资料</button>";
+                echo "<a href='laboratoryinfo.php?id=" . $v_stu_laboratory_row[$i]['laboratoryid'] . "'><button class='btn btn-sm btn-success mr5'><i class='fa fa-user'></i>详细资料</button></a>";
                       //echo "<button class='btn btn-sm btn-white'><i class='fa fa-sign-out'></i>移出</button>";
                 echo "</div></div>";
                    // }

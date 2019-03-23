@@ -43,17 +43,17 @@
   <div class="mainpanel">
     <?php require_once('headerright.php'); ?>
 
-    <div class="pageheader">
+    <!-- <div class="pageheader">
       <h2><i class="fa fa-home"></i> 实验室信息 </h2>
       <div class="breadcrumb-wrapper">
         <span class="label">位置：</span>
         <ol class="breadcrumb">
           <li><a href="index.php">主页</a></li>
-          <li><a href="laboratorytable.php">项目管理</a></li>
-          <li class="active">项目信息</li>
+          <li><a href="laboratorytable.php">实验室管理</a></li>
+          <li class="active">实验室信息</li>
         </ol>
       </div>
-    </div>
+    </div> -->
 
     <div class="contentpanel">
       

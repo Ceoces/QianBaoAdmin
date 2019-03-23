@@ -50,7 +50,7 @@
     
     <?php require_once('headerright.php'); ?>
         
-    <div class="pageheader">
+    <!-- <div class="pageheader">
       <h2><i class="fa fa-home"></i> 查看项目信息 </h2>
       <div class="breadcrumb-wrapper">
         <span class="label">位置：</span>
@@ -60,7 +60,7 @@
           <li class="active">查看项目信息</li>
         </ol>
       </div>
-    </div>
+    </div> -->
       <div class="panel panel-default">
         <div class="panel-heading">
             <div class="panel-btns">

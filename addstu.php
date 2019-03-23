@@ -88,7 +88,7 @@ if (isset($_POST['name']) && isset($_POST['class']) && isset($_POST['teacher']) 
     
     <?php require_once('headerright.php'); ?>
       
-    <div class="pageheader">
+    <!-- <div class="pageheader">
       <h2><i class="fa fa-home"></i> 添加学生信息 </h2>
       <div class="breadcrumb-wrapper">
         <span class="label">位置：</span>
@@ -98,7 +98,7 @@ if (isset($_POST['name']) && isset($_POST['class']) && isset($_POST['teacher']) 
           <li class="active">添加学生信息</li>
         </ol>
       </div>
-    </div>
+    </div> -->
     <div class="contentpanel">
       
       <div class="panel panel-default">
@@ -180,26 +180,6 @@ if (isset($_POST['name']) && isset($_POST['class']) && isset($_POST['teacher']) 
                     ?>
                 </datalist> 
                 
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label class="col-sm-3 control-label">项目</label>
-              <div class="col-sm-6">
-                <input list="bj3" class="form-control" placeholder="项目" name="project" />
-                <datalist id="bj3">
-                    <?php 
-                    if (is_root) {
-                      $sql = "select * from t_project";
-                    } else {
-                      $sql = "select * from t_project where teacherid='" . $_SESSION['id'] . "'";
-                    }
-                    $row = $db->findAll($sql);
-                    for ($i = 0; $i < count($row); $i++) {
-                      echo "<option value='" . $row[$i]['id'] . "'>" . $row[$i]['name'] . "</option>";
-                    }
-                    ?>
-                </datalist> 
               </div>
             </div>
             
